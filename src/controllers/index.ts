@@ -1,0 +1,1 @@
+export * as AdminCtrl from "./adminController";
