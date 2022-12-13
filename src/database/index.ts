@@ -6,7 +6,7 @@ export const connect = () => {
   var password = encodeURIComponent(config.DB_PASSWORD);
   const URI = `mongodb+srv://${username}:${password}@sonaxmultitrade.sxouqhc.mongodb.net/${config.DATABASE}`;
   mongoose.set("strictQuery", true);
-  mongoose.connect(URI, { useUnifiedTopology: true } as ConnectOptions);
+  mongoose.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true } as ConnectOptions);
   const connection = mongoose.connection;
   connection.once("open", (err) => {
     if (err) throw err;
