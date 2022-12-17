@@ -7,6 +7,7 @@ export interface IUser extends Document {
   uId: string;
   firstName: string | null;
   lastName: string | null;
+  email: string | null;
   activeUser: string;
   gender: string | null;
   password: string;

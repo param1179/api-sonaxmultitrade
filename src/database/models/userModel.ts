@@ -10,19 +10,24 @@ const UserSchema = new Schema<IUser>(
     uId: {
       type: String,
       require: true,
+      unique: true,
     },
     firstName: {
       type: String,
-      default: null,
+      require: true,
     },
     lastName: {
+      type: String,
+      require: true,
+    },
+    email: {
       type: String,
       default: null,
     },
     gender: {
       type: String,
       trim: true,
-      enum: ["Girl", "Boy"],
+      enum: ["Male", "Female"],
     },
     activeUser: {
       type: String,

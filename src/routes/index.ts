@@ -4,6 +4,7 @@ import { getS3 } from "../helpers";
 import { IAuth } from "../interfaces";
 import { countries } from "../mockData";
 import { adminRouter } from "./admin";
+import { usersRouter } from "./users";
 
 const router = express.Router();
 
@@ -17,6 +18,7 @@ router.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 router.use("/admin", adminRouter);
+router.use("/users", usersRouter);
 router.use(
   "/countries",
   async (req: IAuth, res: Response, next: NextFunction) => {

@@ -4,6 +4,7 @@ export const adminDto = (res: any) => {
     firstName: res.firstName,
     lastName: res.lastName,
     email: res.email,
-    role: res.role
+    role: res.role,
+    accessToken: ''
   };
 };

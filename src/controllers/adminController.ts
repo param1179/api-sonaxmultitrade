@@ -5,7 +5,13 @@ import { OK } from "../consts";
 import { adminDto } from "../dto";
 import { ApiError } from "../errors";
 import { IAuthAdmin } from "../interfaces";
-import { AdminModel } from "../database/models";
+import {
+  AdminModel,
+  UserModel,
+  UserNomineeModel,
+  UserSponserByModel,
+} from "../database/models";
+import { sendSms } from "../services/smsService";
 
 export const adminSignUp = async (
   req: Request,
@@ -45,13 +51,75 @@ export const adminLogIn = async (
 
     const adminData = adminDto(admin);
 
-    const accessToken = JsonWebToken.sign(adminData, config.SECRET_KEY);
+    adminData.accessToken = JsonWebToken.sign(adminData, config.SECRET_KEY);
 
     res.status(OK).json({
       status: OK,
       message: `Login successfully.`,
       data: adminData,
-      accessToken: accessToken,
+      endpoint: req.originalUrl,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const adminLogOut = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    res.status(OK).json({
+      status: OK,
+      message: `Logout successfully.`,
+      endpoint: req.originalUrl,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const adminCreateUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { body } = req;
+    const uuid = Date.now().toString();
+
+    const last4Str = String(uuid).slice(-8);
+    body.uId = "SONAX" + last4Str;
+
+    const user = await UserModel.create(body);
+
+    if (user) {
+      if (body.nomineeFirstName) {
+        await UserNomineeModel.create({
+          userId: user._id,
+          firstName: body.nomineeFirstName,
+          lastName: body.nomineeLastName,
+          dob: body.nomineeDob,
+          relation: body.nomineeRelation,
+        });
+      }
+      if (body.sponserId) {
+        await UserSponserByModel.create({
+          userId: user._id,
+          sponserId: body.sponserId,
+          placement: body.placement,
+        });
+      }
+    }
+
+    const sms = sendSms();
+    console.log(sms);
+
+    res.status(OK).json({
+      status: OK,
+      message: `Logout successfully.`,
+      user,
       endpoint: req.originalUrl,
     });
   } catch (error) {

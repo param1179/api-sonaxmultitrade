@@ -30,10 +30,7 @@ const AdminSchema = new Schema<IAdmin>(
     photo: String,
   },
   {
-    timestamps: {
-      createdAt: "createdAt",
-      updatedAt: "updatedAt",
-    },
+    timestamps: true,
   }
 );
 
