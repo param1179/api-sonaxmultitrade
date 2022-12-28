@@ -24,6 +24,12 @@ export interface IUserSponserBy extends Request {
   placement: string;
 }
 
+export interface IPackages extends Request {
+  name: string;
+  price: string;
+  months: string;
+}
+
 export interface IUserNominee extends Document {
   userId?: ID;
   firstName: string;

@@ -1,1 +1,2 @@
-export * as AdminCtrl from "./adminController";
+export * as AdminCtrl from "./admin";
+export * as UserCtrl from "./users";

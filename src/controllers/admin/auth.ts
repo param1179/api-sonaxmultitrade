@@ -1,17 +1,17 @@
 import { NextFunction, Request, Response } from "express";
 import JsonWebToken from "jsonwebtoken";
-import { config } from "../config";
-import { OK } from "../consts";
-import { adminDto } from "../dto";
-import { ApiError } from "../errors";
-import { IAuthAdmin } from "../interfaces";
+import { config } from "../../config";
+import { OK } from "../../consts";
+import { adminDto, adminUserDto } from "../../dto";
+import { ApiError } from "../../errors";
+import { IAuthAdmin } from "../../interfaces";
 import {
   AdminModel,
   UserModel,
   UserNomineeModel,
   UserSponserByModel,
-} from "../database/models";
-import { sendSms } from "../services/smsService";
+} from "../../database/models";
+import { sendOtp } from "../../services/smsService";
 
 export const adminSignUp = async (
   req: Request,
@@ -80,6 +80,27 @@ export const adminLogOut = async (
   }
 };
 
+export const adminProfile = async (
+  req: IAuthAdmin,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { userId } = req;
+    const profile = await AdminModel.findById(userId);
+    res.status(OK).json({
+      status: OK,
+      data: {
+        admin: profile,
+      },
+      message: ` successfully.`,
+      endpoint: req.originalUrl,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const adminCreateUser = async (
   req: Request,
   res: Response,
@@ -113,13 +134,45 @@ export const adminCreateUser = async (
       }
     }
 
-    const sms = sendSms();
-    console.log(sms);
+    await sendOtp(
+      `+91${user.mobile}`,
+      `Welcome to Sonax Multitrade. You are registered succesfully. Your UID is: ${user.uId} and Password is: 12345678. You can login on www.sonaxmultitrade.in. Thank you.`
+    );
 
     res.status(OK).json({
       status: OK,
-      message: `Logout successfully.`,
+      message: `Created successfully.`,
       user,
+      endpoint: req.originalUrl,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const adminGetUsers = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const users = await UserModel.find().then((usersT) => {
+      const usersJoin = usersT.map(async (user: any) => {
+        const userDto = adminUserDto(user);
+        userDto.nominee = await UserNomineeModel.findOne({ userId: user._id });
+        userDto.sponserBY = await UserSponserByModel.findOne({
+          userId: user._id,
+        });
+        return userDto;
+      });
+      return usersJoin;
+    });
+
+    const usersData = await Promise.all(users);
+    res.status(OK).json({
+      status: OK,
+      message: `Successfully.`,
+      users: usersData,
       endpoint: req.originalUrl,
     });
   } catch (error) {

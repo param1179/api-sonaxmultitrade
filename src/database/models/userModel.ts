@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Types } from "mongoose";
 import { IUser } from "../../interfaces";
 import bcrypt from "bcryptjs";
 
@@ -63,9 +63,38 @@ const UserSchema = new Schema<IUser>(
       type: String,
       default: null,
     },
+    packageId: {
+      type: Types.ObjectId,
+      ref: "Package",
+      default: null,
+    },
     countryCode: {
       type: String,
-      require: true,
+      default: null,
+    },
+    locality: {
+      type: String,
+      default: null,
+    },
+    city: {
+      type: String,
+      default: null,
+    },
+    district: {
+      type: String,
+      default: null,
+    },
+    state: {
+      type: String,
+      default: null,
+    },
+    pin: {
+      type: String,
+      default: null,
+    },
+    country: {
+      type: String,
+      default: null,
     },
   },
   {

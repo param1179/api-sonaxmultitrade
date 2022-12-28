@@ -18,6 +18,13 @@ export interface IUser extends Document {
   deviceToken: string | null;
   isCompleted: boolean;
   countryCode: string | null;
+  locality: string | null;
+  city: string | null;
+  district: string | null;
+  state: string | null;
+  pin: string | null;
+  country: string | null;
+  packageId: ObjectId | null;
   validatePassword(password: string): boolean;
 }
 

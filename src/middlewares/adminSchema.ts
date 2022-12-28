@@ -13,7 +13,6 @@ export const createUser = yup.object({
     lastName: yup.string().required(),
     gender: yup.string().required(),
     dob: yup.date().required(),
-    plan: yup.string().required(),
     mobile: yup
       .number()
       .integer()

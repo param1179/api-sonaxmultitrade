@@ -37,6 +37,7 @@ export const auth = async (
       if (!token) return next(ApiError.UnauthorizedError());
   
       const verifiedData: any = await verifyToken(token);
+      
       const userId = verifiedData._id;
   
       const admin = await AdminModel.findById(userId);
