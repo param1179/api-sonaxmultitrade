@@ -21,7 +21,10 @@ export const getProfile = async (
     userDto.nominee = await UserNomineeModel.findOne({ userId: userId });
     userDto.sponserBY = await UserSponserByModel.findOne({
       userId: userId,
-    });
+    })
+      .populate("sponserId", "firstName lastName uId email mobile")
+      .exec();
+      
     res.status(OK).json({
       status: OK,
       message: `Successfully fetched.`,
