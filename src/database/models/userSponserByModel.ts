@@ -4,18 +4,26 @@ import { IUserSponserBy } from "../../interfaces";
 // Create the schema
 const userSponserBySchema = new Schema<IUserSponserBy>(
   {
-    userId: {
+    childs: [
+      {
+        placement: {
+          type: String,
+          require: true,
+        },
+        childId: {
+          type: Types.ObjectId,
+          ref: "User",
+        },
+      },
+    ],
+    parentId: {
       type: Types.ObjectId,
       ref: "User",
     },
-    sponserId: {
+    sponserBy: {
       type: Types.ObjectId,
       ref: "User",
     },
-    placement: {
-      type: String,
-      require: true
-    }
   },
   {
     timestamps: true,

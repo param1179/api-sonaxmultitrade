@@ -65,11 +65,14 @@ export const createUser = async (
 ) => {
   try {
     const { body } = req;
-    const uuid = Date.now().toString();
-
-    const last4Str = String(uuid).slice(-8);
-    body.uId = "SONAX" + last4Str;
-
+    const totalUsers = (await UserModel.countDocuments()) + 1;
+    const zero =
+      totalUsers.toString.length === 1
+        ? "000"
+        : totalUsers.toString.length === 2
+        ? "00"
+        : totalUsers.toString.length === 3 && "0";
+    body.uId = "SONAX" + zero + totalUsers;
     const user = await UserModel.create(body);
 
     if (user) {
@@ -82,12 +85,31 @@ export const createUser = async (
           relation: body.nomineeRelation,
         });
       }
-      if (body.sponserId) {
+
+      const spo = await UserSponserByModel.findOne({
+        parentId: body.parentId,
+      });
+      if (body.sponserId && !spo) {
         await UserSponserByModel.create({
-          userId: user._id,
-          sponserId: body.sponserId,
-          placement: body.placement,
+          childs: {
+            childId: user._id,
+            placement: body.placement,
+          },
+          parentId: body.parentId,
+          sponserBy: body.sponserId,
         });
+      } else if (spo?.childs && spo.childs.length < 2) {
+        await UserSponserByModel.findOneAndUpdate(
+          { parentId: body.parentId },
+          {
+            $push: {
+              childs: {
+                childId: user._id,
+                placement: body.placement,
+              },
+            },
+          }
+        );
       }
     }
 

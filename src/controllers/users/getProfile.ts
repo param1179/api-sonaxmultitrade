@@ -19,10 +19,8 @@ export const getProfile = async (
     const user = await UserModel.findById(userId);
     const userDto = userProfileDto(user);
     userDto.nominee = await UserNomineeModel.findOne({ userId: userId });
-    userDto.sponserBY = await UserSponserByModel.findOne({
-      userId: userId,
-    })
-      .populate("sponserId", "firstName lastName uId email mobile")
+    userDto.sponserBY = await UserSponserByModel.findOne({childs: { $elemMatch: { childId : userId}}})
+      .populate("parentId childs.childId", "firstName lastName uId email mobile")
       .exec();
       
     res.status(OK).json({

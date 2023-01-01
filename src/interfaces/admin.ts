@@ -19,9 +19,9 @@ export interface IAuthAdmin extends Request {
 }
 
 export interface IUserSponserBy extends Request {
-  userId?: ID;
-  sponserId?: ID;
-  placement: string;
+  childs:Array<any>;
+  sponserBy?: ID;
+  parentId?: ID;
 }
 
 export interface IPackages extends Request {
