@@ -1,8 +1,8 @@
 import { ObjectId } from "mongoose";
 import { UserSponserByModel } from "../database/models";
 
-export const getChilren = async (_id: ObjectId) => {
-  const teams = await UserSponserByModel.find({ sponserBy: _id })
+export const getChilren = async (pId: ObjectId) => {
+  const teams = await UserSponserByModel.findOne({parentId: pId })
     .populate("childs.childId", "firstName lastName email uId")
     .exec();
   return teams;

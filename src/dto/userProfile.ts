@@ -5,7 +5,7 @@ export const adminDto = (res: any) => {
     lastName: res.lastName,
     email: res.email,
     role: res.role,
-    accessToken: ''
+    accessToken: "",
   };
 };
 
@@ -16,7 +16,7 @@ export const userDto = (res: any) => {
     lastName: res.lastName,
     email: res.email,
     uId: res.uId,
-    accessToken: ''
+    accessToken: "",
   };
 };
 
@@ -37,6 +37,7 @@ export const adminUserDto = (res: any) => {
 export const userProfileDto = (res: any) => {
   return {
     _id: res._id,
+    pId: res.pId,
     firstName: res.firstName,
     lastName: res.lastName,
     email: res.email,

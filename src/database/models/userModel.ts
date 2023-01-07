@@ -96,6 +96,10 @@ const UserSchema = new Schema<IUser>(
       type: String,
       default: null,
     },
+    pId: {
+      type: Types.ObjectId,
+      ref: "User",
+    },
   },
   {
     timestamps: true,

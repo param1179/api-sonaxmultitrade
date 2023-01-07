@@ -25,6 +25,7 @@ export interface IUser extends Document {
   pin: string | null;
   country: string | null;
   packageId: ObjectId | null;
+  pId: ObjectId | null;
   validatePassword(password: string): boolean;
 }
 
