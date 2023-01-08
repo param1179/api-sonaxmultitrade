@@ -25,11 +25,11 @@ export const teams = async (req: IAuth, res: Response, next: NextFunction) => {
 
 async function getchildData(userId: any) {
   const data = await getChilren(userId);
-  const chi = childArray(data, userId);
+  const chi = await childArray(data, userId);
   return chi;
 }
 
-function childArray(children: any, userId: any) {
+async function childArray(children: any, userId: any) {
   if (!children) {
     children = {
       childs: [
@@ -38,7 +38,6 @@ function childArray(children: any, userId: any) {
             firstName: "Add User",
             _id: null,
           },
-          parentId: userId,
           placement: "Left",
         },
         {
@@ -46,23 +45,27 @@ function childArray(children: any, userId: any) {
             firstName: "Add User",
             _id: null,
           },
-          parentId: userId,
           placement: "Right",
         },
       ],
+      parentId: userId,
     };
 
     return children;
   }
   if (children.childs.length === 1) {
-    children.childs[1] = {
+    var ch: any;
+    const place = children.childs[0].placement;
+    ch = {
       childId: {
         firstName: "Add User",
         _id: null,
       },
       parentId: userId,
-      placement: "Right",
+      placement: place !== "Right" ? "Right" : "Left",
     };
+    children.parentId = userId,
+    children.childs[1] = ch;
     return children;
   }
   if (children.childs.length === 2) {
