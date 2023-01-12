@@ -16,6 +16,7 @@ router.get("/profile", AdminCtrl.adminProfile);
 
 //Users Actions by Admin
 router.post("/users/add", validate(createUser), AdminCtrl.adminCreateUser);
-router.get("/users/get", authAdmin, AdminCtrl.adminGetUsers);
+router.get("/packages", authAdmin, AdminCtrl.packages);
+router.get("/users", authAdmin, AdminCtrl.getUsers);
 
 export { router as adminRouter };
