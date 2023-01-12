@@ -67,11 +67,11 @@ export const createUser = async (
     const { body } = req;
     const totalUsers = (await UserModel.countDocuments()) + 1;
     const zero =
-      totalUsers.toString.length === 1
+      totalUsers.toString().length === 1
         ? "000"
-        : totalUsers.toString.length === 2
+        : totalUsers.toString().length === 2
         ? "00"
-        : totalUsers.toString.length === 3 && "0";
+        : totalUsers.toString().length === 3 && "0";
     body.uId = "SONAX" + zero + totalUsers;
     const user = await UserModel.create(body);
 
