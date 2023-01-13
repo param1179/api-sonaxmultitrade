@@ -55,47 +55,49 @@ export const adminCreateUser = async (
         });
       }
 
-      const child = await UserSponserByModel.findOne({
-        parentId: body.sponserId,
-      }).sort({ createdAt: -1 });
+      if (body.sponserId) {
+        const child = await UserSponserByModel.findOne({
+          parentId: body.sponserId,
+        }).sort({ createdAt: -1 });
 
-      if (child && child.childs.length > 0) {
-        const childPos = child?.childs.filter(
-          (res) => res.placement === body.placement
-        );
-        if (childPos.length > 0) {
+        if (child && child.childs.length > 0) {
+          const childPos = child?.childs.filter(
+            (res) => res.placement === body.placement
+          );
+          if (childPos.length > 0) {
+            await getLastChild(
+              childPos[0].childId,
+              body.placement,
+              body.sponserId,
+              user._id
+            );
+          } else {
+            await UserSponserByModel.findOneAndUpdate(
+              { parentId: child?.parentId },
+              {
+                $push: {
+                  childs: {
+                    childId: user._id,
+                    placement: body.placement,
+                  },
+                },
+              }
+            );
+          }
+        } else {
           await getLastChild(
-            childPos[0].childId,
+            body.sponserId,
             body.placement,
             body.sponserId,
             user._id
           );
-        } else {
-          await UserSponserByModel.findOneAndUpdate(
-            { parentId: child?.parentId },
-            {
-              $push: {
-                childs: {
-                  childId: user._id,
-                  placement: body.placement,
-                },
-              },
-            }
-          );
         }
-      } else {
-        await getLastChild(
-          body.sponserId,
-          body.placement,
-          body.sponserId,
-          user._id
-        );
       }
     }
 
     await sendOtp(
       `+91${user.mobile}`,
-      `Welcome to Sonax Multitrade. You are registered succesfully. Your UID is: ${user.uId} and Password is: 12345678. You can login on www.sonaxmultitrade.in. Thank you.`
+      `Welcome to Sonax Multitrade. You are registered succesfully. Your UID is: ${user.uId} and Password is: ${body.password}. You can login on https://sonaxmultitrade.in . Thank you.`
     );
 
     res.status(OK).json({
