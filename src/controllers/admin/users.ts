@@ -97,7 +97,7 @@ export const adminCreateUser = async (
 
     await sendOtp(
       `+91${user.mobile}`,
-      `Welcome to Sonax Multitrade. You are registered succesfully. Your UID is: ${user.uId} and Password is: ${body.password}. You can login on https://sonaxmultitrade.in . Thank you.`
+      `Welcome to Sonax Multitrade. You are registered with us. Your user ID: "${user.uId}" and PASSWORD: "${body.password}". You can login on https://sonaxmultitrade.in . Thank you.`
     );
 
     res.status(OK).json({
