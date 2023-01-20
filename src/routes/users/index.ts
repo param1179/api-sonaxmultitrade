@@ -10,6 +10,7 @@ router.get("/profile", auth, UserCtrl.getProfile);
 router.get("/packages", auth, UserCtrl.packages);
 router.get("/teams/:pId", auth, UserCtrl.teams);
 router.post("/add", validate(createUser), UserCtrl.createUser);
+router.post("/register", validate(createUser), UserCtrl.createUserDirect);
 
 
 export { router as usersRouter };
