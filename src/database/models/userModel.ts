@@ -125,6 +125,17 @@ UserSchema.pre("save", async function (next) {
   }
 });
 
+UserSchema.pre("findOneAndUpdate", async function (next) {
+  const user = this.getUpdate() as IUser;
+  if (!user.password) {
+    next();
+  } else {
+    const salt = await bcrypt.genSalt(HASH_ROUNDS);
+    user.password = await bcrypt.hash(user.password, salt);
+    next();
+  }
+});
+
 UserSchema.methods.validatePassword = async function (password: string) {
   return bcrypt.compare(password, this.password);
 };

@@ -4,7 +4,7 @@ import { config } from "../../config";
 import { OK } from "../../consts";
 import { adminDto, adminUserDto, userDto, userProfileDto } from "../../dto";
 import { ApiError } from "../../errors";
-import { IAuthAdmin } from "../../interfaces";
+import { IAuth, IAuthAdmin } from "../../interfaces";
 import {
   AdminModel,
   UserModel,
@@ -122,6 +122,36 @@ export const createUser = async (
       status: OK,
       message: `Created successfully.`,
       user,
+      endpoint: req.originalUrl,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const changePAssword = async (
+  req: IAuth,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { userId, body } = req;
+    const user = await UserModel.findById(userId);
+    if (!user) return next(ApiError.BadRequest("User not found!"));
+
+    const isMatch = await user.validatePassword(body.oldPassword);
+
+    if (!isMatch) return next(ApiError.BadRequest("Password does not match!"));
+
+    await UserModel.findOneAndUpdate(
+      { _id: userId },
+      { password: body.password },
+      { useFindAndModify: false }
+    );
+
+    res.status(OK).json({
+      status: OK,
+      message: `Updated successfully.`,
       endpoint: req.originalUrl,
     });
   } catch (error) {
