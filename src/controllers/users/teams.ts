@@ -1,7 +1,11 @@
 import { NextFunction, Response } from "express";
 import { ObjectId } from "mongoose";
 import { OK } from "../../consts";
-import { PackagesModel, UserSponserByModel } from "../../database/models";
+import {
+  PackagesModel,
+  UserModel,
+  UserSponserByModel,
+} from "../../database/models";
 import { ApiError } from "../../errors";
 import { IAuth } from "../../interfaces";
 import { getChilren } from "../../services/userServices";
@@ -31,6 +35,9 @@ async function getchildData(userId: any) {
 
 async function childArray(children: any, userId: any) {
   if (!children) {
+    const user = await UserModel.findById(userId).select(
+      "firstName lastName email uId isCompleted"
+    );
     children = {
       childs: [
         {
@@ -48,7 +55,7 @@ async function childArray(children: any, userId: any) {
           placement: "Right",
         },
       ],
-      parentId: userId,
+      parentId: user,
     };
 
     return children;
@@ -64,7 +71,6 @@ async function childArray(children: any, userId: any) {
       parentId: userId,
       placement: place !== "Right" ? "Right" : "Left",
     };
-    children.parentId = userId,
     children.childs[1] = ch;
     return children;
   }

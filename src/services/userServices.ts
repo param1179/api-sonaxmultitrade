@@ -1,9 +1,17 @@
 import { ObjectId } from "mongoose";
-import { UserSponserByModel } from "../database/models";
+import { UserModel, UserSponserByModel } from "../database/models";
 
 export const getChilren = async (pId: ObjectId) => {
-  const teams = await UserSponserByModel.findOne({parentId: pId })
-    .populate("childs.childId", "firstName lastName email uId")
+  var populateQuery = [
+    {
+      path: "childs.childId",
+      select: "firstName lastName email uId isCompleted",
+    },
+    { path: "parentId", select: "firstName lastName email uId isCompleted" },
+  ];
+  const teams = await UserSponserByModel.findOne({ parentId: pId })
+    .populate(populateQuery)
     .exec();
+  
   return teams;
 };
