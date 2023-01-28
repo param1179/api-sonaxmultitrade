@@ -13,6 +13,7 @@ import { getChilren } from "../../services/userServices";
 export const teams = async (req: IAuth, res: Response, next: NextFunction) => {
   try {
     const userId = req.params.pId as unknown as ObjectId;
+    const direct = await UserSponserByModel.find({sponserBy: userId});
 
     const dat = await getchildData(userId);
 
@@ -20,6 +21,7 @@ export const teams = async (req: IAuth, res: Response, next: NextFunction) => {
       status: OK,
       message: `Successfully fetched.`,
       data: dat,
+      direct,
       endpoint: req.originalUrl,
     });
   } catch (error) {

@@ -6,19 +6,31 @@ import {
   UserSponserByModel,
 } from "../../database/models";
 import { adminUserDto } from "../../dto";
+import { IAuthAdmin } from "../../interfaces";
 import { sendOtp } from "../../services";
 
 export const getUsers = async (
-  req: Request,
+  req: IAuthAdmin,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const users = await UserModel.find().select("_id firstName lastName uId");
+    const { limit = 10, page = 1 } = req.query as unknown as {
+      limit: number;
+      page: number;
+    };
+
+    const users = await UserModel.find()
+      .select("_id firstName lastName uId isCompleted")
+      .skip((page - 1) * limit)
+      .limit(limit);
+    const totalUsers = await UserModel.find().countDocuments()
+
     res.status(OK).json({
       status: OK,
       message: `successfully.`,
       users,
+      totalUsers,
       endpoint: req.originalUrl,
     });
   } catch (error) {
