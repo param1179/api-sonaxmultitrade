@@ -11,7 +11,7 @@ import {
   UserNomineeModel,
   UserSponserByModel,
 } from "../../database/models";
-import { sendOtp } from "../../services/smsService";
+import { sendOtp } from "../../services";
 
 export const userLogIn = async (
   req: Request,

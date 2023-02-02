@@ -1,2 +1,2 @@
 export * from './authServices'
-export * from './otpServices'
+export * from './smsService'
