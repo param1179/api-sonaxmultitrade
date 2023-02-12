@@ -6,6 +6,7 @@ import {
   UserSponserByModel,
 } from "../../database/models";
 import { adminUserDto } from "../../dto";
+import { ApiError } from "../../errors";
 import { IAuthAdmin } from "../../interfaces";
 import { sendOtp } from "../../services";
 
@@ -15,16 +16,17 @@ export const getUsers = async (
   next: NextFunction
 ) => {
   try {
-    const { limit = 10, page = 1 } = req.query as unknown as {
+    const { limit = 10, page = 1, search="" } = req.query as unknown as {
       limit: number;
       page: number;
+      search: string;
     };
 
-    const users = await UserModel.find()
+    const users = await UserModel.find({uId: {$regex: search, $options: 'i'}})
       .select("_id firstName lastName uId isCompleted")
       .skip((page - 1) * limit)
       .limit(limit);
-    const totalUsers = await UserModel.find().countDocuments()
+    const totalUsers = await UserModel.find().countDocuments();
 
     res.status(OK).json({
       status: OK,
@@ -185,3 +187,24 @@ async function getLastChild(
     });
   }
 }
+
+export const updateUsers = async (
+  req: IAuthAdmin,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params;
+    const user = await UserModel.findById(id);
+    if (!user) return next(ApiError.BadRequest("user not exist!"));
+    user.isCompleted = !user.isCompleted;
+    await user.save();
+    res.status(OK).json({
+      status: OK,
+      message: `Successfully updated.`,
+      endpoint: req.originalUrl,
+    });
+  } catch (error) {
+    next(error);
+  }
+};

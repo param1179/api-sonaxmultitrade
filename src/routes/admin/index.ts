@@ -18,5 +18,6 @@ router.get("/profile", AdminCtrl.adminProfile);
 router.post("/users/add", validate(createUser), AdminCtrl.adminCreateUser);
 router.get("/packages", authAdmin, AdminCtrl.packages);
 router.get("/users", authAdmin, AdminCtrl.getUsers);
+router.get("/user/:id", authAdmin, AdminCtrl.updateUsers);
 
 export { router as adminRouter };

@@ -30,6 +30,13 @@ export interface IPackages extends Request {
   months: string;
 }
 
+export interface IInstallments extends Request {
+  userId?: ID;
+  price: string;
+  type: string;
+  month: string;
+}
+
 export interface IUserNominee extends Document {
   userId?: ID;
   firstName: string;
