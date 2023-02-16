@@ -18,6 +18,7 @@ router.get("/profile", AdminCtrl.adminProfile);
 router.post("/users/add", validate(createUser), AdminCtrl.adminCreateUser);
 router.get("/packages", authAdmin, AdminCtrl.packages);
 router.get("/users", authAdmin, AdminCtrl.getUsers);
+router.get("/users/list", authAdmin, AdminCtrl.getAllUsers);
 router.get("/user/:id", authAdmin, AdminCtrl.updateUsers);
 router.get("/installments/:id", authAdmin, AdminCtrl.getInstallments);
 router.get("/payment/:id", authAdmin, AdminCtrl.updatePayment);

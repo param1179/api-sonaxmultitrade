@@ -48,6 +48,27 @@ export const getUsers = async (
   }
 };
 
+export const getAllUsers = async (
+  req: IAuthAdmin,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const users = await UserModel.find().select(
+      "_id firstName lastName uId isCompleted"
+    );
+
+    res.status(OK).json({
+      status: OK,
+      message: `successfully.`,
+      users,
+      endpoint: req.originalUrl,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const adminCreateUser = async (
   req: Request,
   res: Response,
@@ -214,7 +235,11 @@ export const updateUsers = async (
         user.packageId
       );
       for (let index: number = 0; index < months; index++) {
-        await InstallmentsModel.create({ userId: id, price: price, status: index === 0 && true });
+        await InstallmentsModel.create({
+          userId: id,
+          price: price,
+          status: index === 0 && true,
+        });
       }
     }
 
