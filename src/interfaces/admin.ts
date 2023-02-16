@@ -19,7 +19,7 @@ export interface IAuthAdmin extends Request {
 }
 
 export interface IUserSponserBy extends Request {
-  childs:Array<any>;
+  childs: Array<any>;
   sponserBy?: ID;
   parentId?: ID;
 }
@@ -27,7 +27,7 @@ export interface IUserSponserBy extends Request {
 export interface IPackages extends Request {
   name: string;
   price: string;
-  months: string;
+  months: number;
 }
 
 export interface IInstallments extends Request {
@@ -35,6 +35,7 @@ export interface IInstallments extends Request {
   price: string;
   type: string;
   month: string;
+  status: boolean;
 }
 
 export interface IUserNominee extends Document {

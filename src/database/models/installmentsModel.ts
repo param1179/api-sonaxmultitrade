@@ -20,6 +20,10 @@ const installmentsSchema = new Schema<IInstallments>(
       type: String,
       default: null,
     },
+    status: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

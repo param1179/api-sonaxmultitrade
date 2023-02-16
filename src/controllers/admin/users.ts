@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { OK } from "../../consts";
 import {
+  InstallmentsModel,
+  PackagesModel,
   UserModel,
   UserNomineeModel,
   UserSponserByModel,
@@ -16,13 +18,19 @@ export const getUsers = async (
   next: NextFunction
 ) => {
   try {
-    const { limit = 10, page = 1, search="" } = req.query as unknown as {
+    const {
+      limit = 10,
+      page = 1,
+      search = "",
+    } = req.query as unknown as {
       limit: number;
       page: number;
       search: string;
     };
 
-    const users = await UserModel.find({uId: {$regex: search, $options: 'i'}})
+    const users = await UserModel.find({
+      uId: { $regex: search, $options: "i" },
+    })
       .select("_id firstName lastName uId isCompleted")
       .skip((page - 1) * limit)
       .limit(limit);
@@ -196,9 +204,23 @@ export const updateUsers = async (
   try {
     const { id } = req.params;
     const user = await UserModel.findById(id);
+
     if (!user) return next(ApiError.BadRequest("user not exist!"));
+    if (!user.packageId)
+      return next(ApiError.BadRequest("package not selected!"));
+
+    if (!(await InstallmentsModel.exists({ userId: id }))) {
+      const { months, price }: any = await PackagesModel.findById(
+        user.packageId
+      );
+      for (let index: number = 0; index < months; index++) {
+        await InstallmentsModel.create({ userId: id, price: price, status: index === 0 && true });
+      }
+    }
+
     user.isCompleted = !user.isCompleted;
     await user.save();
+
     res.status(OK).json({
       status: OK,
       message: `Successfully updated.`,

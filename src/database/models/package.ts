@@ -13,7 +13,7 @@ const packageSchema = new Schema<IPackages>(
       default: null,
     },
     months: {
-      type: String,
+      type: Number,
       default: null,
     },
   },

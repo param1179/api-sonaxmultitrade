@@ -19,5 +19,7 @@ router.post("/users/add", validate(createUser), AdminCtrl.adminCreateUser);
 router.get("/packages", authAdmin, AdminCtrl.packages);
 router.get("/users", authAdmin, AdminCtrl.getUsers);
 router.get("/user/:id", authAdmin, AdminCtrl.updateUsers);
+router.get("/installments/:id", authAdmin, AdminCtrl.getInstallments);
+router.get("/payment/:id", authAdmin, AdminCtrl.updatePayment);
 
 export { router as adminRouter };

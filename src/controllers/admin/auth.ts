@@ -2,16 +2,12 @@ import { NextFunction, Request, Response } from "express";
 import JsonWebToken from "jsonwebtoken";
 import { config } from "../../config";
 import { OK } from "../../consts";
-import { adminDto, adminUserDto } from "../../dto";
+import { adminDto } from "../../dto";
 import { ApiError } from "../../errors";
 import { IAuthAdmin } from "../../interfaces";
 import {
   AdminModel,
-  UserModel,
-  UserNomineeModel,
-  UserSponserByModel,
 } from "../../database/models";
-import { sendOtp } from "../../services/smsService";
 
 export const adminSignUp = async (
   req: Request,
