@@ -37,14 +37,38 @@ export const updatePayment = async (
     if (!payment) return next(ApiError.BadRequest("payment not exist!"));
 
     await InstallmentsModel.updateOne({ _id: id }, { status: true });
+    const count = await InstallmentsModel.countDocuments({
+      userId: payment?.userId,
+      status: true,
+    });
+
+    let numberof: string;
+
+    switch (count) {
+      case 1:
+        numberof = "1st";
+        break;
+
+      case 2:
+        numberof = "2nd";
+        break;
+
+      case 3:
+        numberof = "3rd";
+        break;
+
+      default:
+        numberof = `${count}th`;
+        break;
+    }
 
     const user = await UserModel.findById(payment.userId);
 
     await sendOtp(
       `+91${user?.mobile}`,
-      `Welcome to Sonax Multitrade. "${user?.uId}" your payment has succeeded. You can login on https://sonaxmultitrade.in . Thank you.`
+      `Welcome to Sonax Multitrade. "${user?.uId}" your ${numberof} installment of Rs.${payment.price} has succeeded. You can login on https://sonaxmultitrade.in . Thank you.`
     );
-    
+
     res.status(OK).json({
       status: OK,
       message: `Successfully updated.`,
