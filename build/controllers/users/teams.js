@@ -35,8 +35,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.teams = void 0;
+exports.teamList = exports.teams = void 0;
 var consts_1 = require("../../consts");
 var models_1 = require("../../database/models");
 var userServices_1 = require("../../services/userServices");
@@ -70,6 +79,57 @@ var teams = function (req, res, next) { return __awaiter(void 0, void 0, void 0,
     });
 }); };
 exports.teams = teams;
+var teamList = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var userId, position_1, child_1, cobine_1, active, inActive, error_2;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                userId = req.params.pId;
+                position_1 = req.query.position;
+                child_1 = [];
+                cobine_1 = function (userId) { return __awaiter(void 0, void 0, void 0, function () {
+                    var dat, chi;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0: return [4 /*yield*/, getchildData(userId)];
+                            case 1:
+                                dat = _a.sent();
+                                chi = dat.childs.filter(function (child) { return child.placement === position_1; });
+                                if (!(chi[0].childId._id !== null)) return [3 /*break*/, 3];
+                                child_1 = __spreadArray(__spreadArray([], child_1, true), [chi[0].childId], false);
+                                return [4 /*yield*/, cobine_1(chi[0].childId._id)];
+                            case 2:
+                                _a.sent();
+                                _a.label = 3;
+                            case 3: return [2 /*return*/];
+                        }
+                    });
+                }); };
+                return [4 /*yield*/, cobine_1(userId)];
+            case 1:
+                _a.sent();
+                active = child_1.filter(function (res) { return res.isCompleted === true; }).length;
+                inActive = child_1.filter(function (res) { return res.isCompleted === false; }).length;
+                res.status(consts_1.OK).json({
+                    status: consts_1.OK,
+                    message: "Successfully fetched.",
+                    data: child_1,
+                    total: child_1.length,
+                    active: active,
+                    inActive: inActive,
+                    endpoint: req.originalUrl,
+                });
+                return [3 /*break*/, 3];
+            case 2:
+                error_2 = _a.sent();
+                next(error_2);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+exports.teamList = teamList;
 function getchildData(userId) {
     return __awaiter(this, void 0, void 0, function () {
         var data, chi;

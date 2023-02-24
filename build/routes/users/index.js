@@ -14,6 +14,7 @@ router.get("/logOut", controllers_1.UserCtrl.userLogOut);
 router.get("/profile", middlewares_1.auth, controllers_1.UserCtrl.getProfile);
 router.get("/packages", middlewares_1.auth, controllers_1.UserCtrl.packages);
 router.get("/teams/:pId", middlewares_1.auth, controllers_1.UserCtrl.teams);
+router.get("/teamList/:pId", middlewares_1.auth, controllers_1.UserCtrl.teamList);
 router.post("/add", middlewares_1.auth, (0, middlewares_1.validate)(middlewares_1.createUser), controllers_1.UserCtrl.createUser);
 router.post("/register", middlewares_1.auth, (0, middlewares_1.validate)(middlewares_1.createUser), controllers_1.UserCtrl.createUserDirect);
 router.get("/installments", middlewares_1.auth, controllers_1.UserCtrl.getInstallments);

@@ -13,8 +13,7 @@ import { getChilren } from "../../services/userServices";
 export const teams = async (req: IAuth, res: Response, next: NextFunction) => {
   try {
     const userId = req.params.pId as unknown as ObjectId;
-    const direct = await UserSponserByModel.find({sponserBy: userId});
-
+    const direct = await UserSponserByModel.find({ sponserBy: userId });
     const dat = await getchildData(userId);
 
     res.status(OK).json({
@@ -22,6 +21,45 @@ export const teams = async (req: IAuth, res: Response, next: NextFunction) => {
       message: `Successfully fetched.`,
       data: dat,
       direct,
+      endpoint: req.originalUrl,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const teamList = async (
+  req: IAuth,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = req.params.pId as unknown as ObjectId;
+    const { position } = req.query;
+    let child: any = [];
+
+    const cobine = async (userId: any) => {
+      const dat = await getchildData(userId);
+      const chi = dat.childs.filter(
+        (child: any) => child.placement === position
+      );
+      if (chi[0].childId._id !== null) {
+        child = [...child, chi[0].childId];
+        await cobine(chi[0].childId._id);
+      }
+    };
+    await cobine(userId);
+
+    const active = child.filter((res: any) => res.isCompleted === true).length;
+    const inActive = child.filter((res: any) => res.isCompleted === false).length;
+
+    res.status(OK).json({
+      status: OK,
+      message: `Successfully fetched.`,
+      data: child,
+      total: child.length,
+      active,
+      inActive,
       endpoint: req.originalUrl,
     });
   } catch (error) {
