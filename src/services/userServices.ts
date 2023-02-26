@@ -5,9 +5,9 @@ export const getChilren = async (pId: ObjectId) => {
   var populateQuery = [
     {
       path: "childs.childId",
-      select: "firstName lastName email uId isCompleted",
+      select: "firstName lastName email uId isCompleted createdAt",
     },
-    { path: "parentId", select: "firstName lastName email uId isCompleted" },
+    { path: "parentId", select: "firstName lastName email uId isCompleted createdAt" },
   ];
   const teams = await UserSponserByModel.findOne({ parentId: pId })
     .populate(populateQuery)

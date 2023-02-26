@@ -153,7 +153,7 @@ function childArray(children, userId) {
             switch (_a.label) {
                 case 0:
                     if (!!children) return [3 /*break*/, 2];
-                    return [4 /*yield*/, models_1.UserModel.findById(userId).select("firstName lastName email uId isCompleted")];
+                    return [4 /*yield*/, models_1.UserModel.findById(userId).select("firstName lastName email uId isCompleted createdAt")];
                 case 1:
                     user = _a.sent();
                     children = {

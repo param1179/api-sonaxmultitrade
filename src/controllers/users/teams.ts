@@ -76,8 +76,9 @@ async function getchildData(userId: any) {
 async function childArray(children: any, userId: any) {
   if (!children) {
     const user = await UserModel.findById(userId).select(
-      "firstName lastName email uId isCompleted"
+      "firstName lastName email uId isCompleted createdAt"
     );
+    
     children = {
       childs: [
         {
