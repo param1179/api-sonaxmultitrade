@@ -20,3 +20,4 @@ __exportStar(require("./packages"), exports);
 __exportStar(require("./teams"), exports);
 __exportStar(require("./users"), exports);
 __exportStar(require("./installments"), exports);
+__exportStar(require("./getTotal"), exports);
