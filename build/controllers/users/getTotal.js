@@ -92,10 +92,13 @@ var testApi = function (req, res, next) { return __awaiter(void 0, void 0, void 
                 return [4 /*yield*/, models_1.UserSponserByModel.findOne({ parentId: userId })];
             case 1:
                 teams = _a.sent();
+                if (!(teams !== null)) return [3 /*break*/, 5];
                 data = teams.childs.filter(function (res) { return res.placement === position_1; });
                 ids = data.map(function (res) { return res.childId; });
                 allIds = __spreadArray([], ids.flat(), true);
-                return [4 /*yield*/, models_1.UserSponserByModel.findOne({ parentId: ids[0] })];
+                return [4 /*yield*/, models_1.UserSponserByModel.findOne({
+                        parentId: ids[0],
+                    })];
             case 2:
                 childs = _a.sent();
                 if (!(childs !== null)) return [3 /*break*/, 5];

@@ -48,18 +48,22 @@ export const testApi = async (
     allIds = [];
     const teams: any = await UserSponserByModel.findOne({ parentId: userId });
 
-    const data: Array<any> = teams.childs.filter(
-      (res: any) => res.placement === position
-    );
+    if (teams !== null) {
+      const data: Array<any> = teams.childs.filter(
+        (res: any) => res.placement === position
+      );
 
-    const ids = data.map((res: any) => res.childId);
+      const ids = data.map((res: any) => res.childId);
 
-    allIds = [...ids.flat()];
+      allIds = [...ids.flat()];
 
-    const childs: any = await UserSponserByModel.findOne({ parentId: ids[0] });
-    if (childs !== null) {
-      if (await bk(childs)) {
-        allIds = await Promise.all(allIds.flat());
+      const childs: any = await UserSponserByModel.findOne({
+        parentId: ids[0],
+      });
+      if (childs !== null) {
+        if (await bk(childs)) {
+          allIds = await Promise.all(allIds.flat());
+        }
       }
     }
 
