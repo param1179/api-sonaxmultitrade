@@ -98,6 +98,7 @@ var testApi = function (req, res, next) { return __awaiter(void 0, void 0, void 
                 return [4 /*yield*/, models_1.UserSponserByModel.findOne({ parentId: ids[0] })];
             case 2:
                 childs = _a.sent();
+                if (!(childs !== null)) return [3 /*break*/, 5];
                 return [4 /*yield*/, bk(childs)];
             case 3:
                 if (!_a.sent()) return [3 /*break*/, 5];
@@ -105,14 +106,14 @@ var testApi = function (req, res, next) { return __awaiter(void 0, void 0, void 
             case 4:
                 allIds = _a.sent();
                 _a.label = 5;
-            case 5: return [4 /*yield*/, models_1.UserModel.find({ _id: { $in: allIds } }).select("firstName lastName email uId isCompleted createdAt")];
+            case 5: return [4 /*yield*/, models_1.UserModel.find({
+                    _id: { $in: allIds },
+                }).select("firstName lastName email uId isCompleted createdAt")];
             case 6:
                 childss = _a.sent();
                 active = childss.filter(function (res) { return res.isCompleted === true; }).length;
                 inActive = childss.filter(function (res) { return res.isCompleted === false; }).length;
-                res
-                    .status(consts_1.OK)
-                    .json({
+                res.status(consts_1.OK).json({
                     status: consts_1.OK,
                     message: "All Done",
                     childss: childss,

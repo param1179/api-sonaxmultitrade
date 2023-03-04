@@ -44,10 +44,11 @@ export const testApi = async (
   try {
     const userId = req.params.pId as unknown as ObjectId;
     const { position } = req.query;
-    
+
     allIds = [];
     const teams: any = await UserSponserByModel.findOne({ parentId: userId });
-    const data: any = teams.childs.filter(
+
+    const data: Array<any> = teams.childs.filter(
       (res: any) => res.placement === position
     );
 
@@ -56,29 +57,29 @@ export const testApi = async (
     allIds = [...ids.flat()];
 
     const childs: any = await UserSponserByModel.findOne({ parentId: ids[0] });
-
-    if (await bk(childs)) {
-      allIds = await Promise.all(allIds.flat());
+    if (childs !== null) {
+      if (await bk(childs)) {
+        allIds = await Promise.all(allIds.flat());
+      }
     }
-    let childss: any = await UserModel.find({ _id: { $in: allIds } }).select(
-      "firstName lastName email uId isCompleted createdAt"
-    );
+
+    let childss: Array<any> = await UserModel.find({
+      _id: { $in: allIds },
+    }).select("firstName lastName email uId isCompleted createdAt");
     const active = childss.filter(
       (res: any) => res.isCompleted === true
     ).length;
     const inActive = childss.filter(
       (res: any) => res.isCompleted === false
     ).length;
-    res
-      .status(OK)
-      .json({
-        status: OK,
-        message: "All Done",
-        childss,
-        total: childss.length,
-        active,
-        inActive,
-      });
+    res.status(OK).json({
+      status: OK,
+      message: "All Done",
+      childss,
+      total: childss.length,
+      active,
+      inActive,
+    });
   } catch (error) {
     next(error);
   }
