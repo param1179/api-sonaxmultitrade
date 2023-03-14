@@ -20,3 +20,4 @@ __exportStar(require("./userSponserByModel"), exports);
 __exportStar(require("./userNominee"), exports);
 __exportStar(require("./package"), exports);
 __exportStar(require("./installmentsModel"), exports);
+__exportStar(require("./rewards"), exports);

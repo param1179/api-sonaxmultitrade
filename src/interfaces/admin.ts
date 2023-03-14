@@ -30,6 +30,12 @@ export interface IPackages extends Request {
   months: number;
 }
 
+export interface IRewards extends Request {
+  rewardLevel: string;
+  onPairs: number;
+  reward: string;
+}
+
 export interface IInstallments extends Request {
   userId?: ID;
   price: string;

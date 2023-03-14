@@ -18,3 +18,4 @@ __exportStar(require("./auth"), exports);
 __exportStar(require("./packages"), exports);
 __exportStar(require("./users"), exports);
 __exportStar(require("./installments"), exports);
+__exportStar(require("./rewards"), exports);
