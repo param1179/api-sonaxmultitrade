@@ -19,3 +19,4 @@ __exportStar(require("./packages"), exports);
 __exportStar(require("./users"), exports);
 __exportStar(require("./installments"), exports);
 __exportStar(require("./rewards"), exports);
+__exportStar(require("./getUserTabs"), exports);

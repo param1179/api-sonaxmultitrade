@@ -23,4 +23,5 @@ router.get("/users/list", middlewares_1.authAdmin, controllers_1.AdminCtrl.getAl
 router.get("/user/:id", middlewares_1.authAdmin, controllers_1.AdminCtrl.updateUsers);
 router.get("/installments/:id", middlewares_1.authAdmin, controllers_1.AdminCtrl.getInstallments);
 router.get("/payment/:id", middlewares_1.authAdmin, controllers_1.AdminCtrl.updatePayment);
+router.get("/userTabs/:pId", middlewares_1.authAdmin, controllers_1.AdminCtrl.getUserTabs);
 router.get("/test", middlewares_1.authAdmin, controllers_1.AdminCtrl.packagesUpdate);

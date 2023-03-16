@@ -47,7 +47,6 @@ export const getUserTabs = async (
     res.status(OK).json({
       status: OK,
       message: "All Done",
-      childss,
       total: childss.length,
       active,
       inActive,

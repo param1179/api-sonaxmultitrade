@@ -88,7 +88,6 @@ var getUserTabs = function (req, res, next) { return __awaiter(void 0, void 0, v
                 res.status(consts_1.OK).json({
                     status: consts_1.OK,
                     message: "All Done",
-                    childss: childss,
                     total: childss.length,
                     active: active,
                     inActive: inActive,
