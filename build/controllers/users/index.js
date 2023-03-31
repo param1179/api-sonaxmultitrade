@@ -21,3 +21,4 @@ __exportStar(require("./teams"), exports);
 __exportStar(require("./users"), exports);
 __exportStar(require("./installments"), exports);
 __exportStar(require("./getTotal"), exports);
+__exportStar(require("./rewards"), exports);

@@ -13,6 +13,7 @@ router.get("/teamList/:pId", auth, UserCtrl.getUserTabs);
 router.post("/add", auth, validate(createUser), UserCtrl.createUser);
 router.post("/register", auth, validate(createUser), UserCtrl.createUserDirect);
 router.get("/installments", auth, UserCtrl.getInstallments);
+router.get("/rewards", auth, UserCtrl.getRewards);
 router.post("/changePassword", auth, validate(userChangePasswordSchema), UserCtrl.changePAssword);
 
 

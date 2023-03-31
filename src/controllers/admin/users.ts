@@ -9,6 +9,7 @@ import {
 } from "../../database/models";
 import { adminUserDto } from "../../dto";
 import { ApiError } from "../../errors";
+import { ID } from "../../helpers";
 import { IAuthAdmin } from "../../interfaces";
 import { sendOtp } from "../../services";
 
@@ -245,6 +246,57 @@ export const updateUsers = async (
 
     user.isCompleted = !user.isCompleted;
     await user.save();
+
+    res.status(OK).json({
+      status: OK,
+      message: `Successfully updated.`,
+      endpoint: req.originalUrl,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const userInfo = async (
+  req: IAuthAdmin,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params as unknown as {
+      id: ID;
+    };
+    const user = await UserModel.findById(id).select("-password");
+
+    if (!user) return next(ApiError.BadRequest("user not exist!"));
+
+    res.status(OK).json({
+      status: OK,
+      message: `Successfully updated.`,
+      user,
+      endpoint: req.originalUrl,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const userUpdate = async (
+  req: IAuthAdmin,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { body } = req;
+    const { id } = req.params as unknown as {
+      id: ID;
+    };
+
+    const user = await UserModel.findById(id);
+
+    if (!user) return next(ApiError.BadRequest("user not exist!"));
+
+    await UserModel.updateOne({ _id: id }, body);
 
     res.status(OK).json({
       status: OK,
