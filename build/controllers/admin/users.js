@@ -52,7 +52,7 @@ var getUsers = function (req, res, next) { return __awaiter(void 0, void 0, void
                 return [4 /*yield*/, models_1.UserModel.find({
                         uId: { $regex: search, $options: "i" },
                     })
-                        .select("_id firstName lastName uId isCompleted")
+                        .select("_id firstName lastName uId isCompleted createdAt updatedAt")
                         .skip((page - 1) * limit)
                         .limit(limit)];
             case 1:
