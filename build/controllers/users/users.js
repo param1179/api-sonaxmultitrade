@@ -90,6 +90,7 @@ var createUserDirect = function (req, res, next) { return __awaiter(void 0, void
                         childs: {
                             childId: user._id,
                             placement: body_1.placement,
+                            sponserBy: body_1.sponserId,
                         },
                     },
                 })];
@@ -140,6 +141,7 @@ function getLastChild(parentId, placement, sId, uId) {
                             childs: {
                                 childId: uId,
                                 placement: placement,
+                                sponserBy: sId,
                             },
                         },
                     })];
@@ -151,6 +153,7 @@ function getLastChild(parentId, placement, sId, uId) {
                         childs: {
                             childId: uId,
                             placement: placement,
+                            sponserBy: sId,
                         },
                         parentId: parentId,
                         sponserBy: sId,

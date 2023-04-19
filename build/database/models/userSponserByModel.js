@@ -14,6 +14,10 @@ var userSponserBySchema = new mongoose_1.Schema({
                 type: mongoose_1.Types.ObjectId,
                 ref: "User",
             },
+            sponserBy: {
+                type: mongoose_1.Types.ObjectId,
+                ref: "User",
+            },
         },
     ],
     parentId: {

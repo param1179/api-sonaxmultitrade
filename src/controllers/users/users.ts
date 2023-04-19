@@ -60,6 +60,7 @@ export const createUserDirect = async (
                   childs: {
                     childId: user._id,
                     placement: body.placement,
+                    sponserBy: body.sponserId,
                   },
                 },
               }
@@ -109,6 +110,7 @@ async function getLastChild(
           childs: {
             childId: uId,
             placement: placement,
+            sponserBy: sId,
           },
         },
       });
@@ -118,6 +120,7 @@ async function getLastChild(
       childs: {
         childId: uId,
         placement: placement,
+        sponserBy: sId,
       },
       parentId: parentId,
       sponserBy: sId,

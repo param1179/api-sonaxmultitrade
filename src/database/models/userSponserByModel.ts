@@ -14,6 +14,10 @@ const userSponserBySchema = new Schema<IUserSponserBy>(
           type: Types.ObjectId,
           ref: "User",
         },
+        sponserBy: {
+          type: Types.ObjectId,
+          ref: "User",
+        },
       },
     ],
     parentId: {

@@ -139,6 +139,7 @@ var createUser = function (req, res, next) { return __awaiter(void 0, void 0, vo
                         childs: {
                             childId: user._id,
                             placement: body.placement,
+                            sponserBy: body.sponserId,
                         },
                         parentId: body.parentId,
                         sponserBy: body.sponserId,
@@ -153,6 +154,7 @@ var createUser = function (req, res, next) { return __awaiter(void 0, void 0, vo
                             childs: {
                                 childId: user._id,
                                 placement: body.placement,
+                                sponserBy: body.sponserId,
                             },
                         },
                     })];

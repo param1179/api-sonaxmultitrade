@@ -94,6 +94,7 @@ export const createUser = async (
           childs: {
             childId: user._id,
             placement: body.placement,
+            sponserBy: body.sponserId,
           },
           parentId: body.parentId,
           sponserBy: body.sponserId,
@@ -106,6 +107,7 @@ export const createUser = async (
               childs: {
                 childId: user._id,
                 placement: body.placement,
+                sponserBy: body.sponserId,
               },
             },
           }
