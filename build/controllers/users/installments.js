@@ -40,27 +40,32 @@ exports.getInstallments = void 0;
 var consts_1 = require("../../consts");
 var models_1 = require("../../database/models");
 var getInstallments = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var userId, installments, error_1;
+    var userId, installments, user, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 2, , 3]);
+                _a.trys.push([0, 3, , 4]);
                 userId = req.userId;
                 return [4 /*yield*/, models_1.InstallmentsModel.find({ userId: userId })];
             case 1:
                 installments = _a.sent();
+                return [4 /*yield*/, models_1.UserModel.findOne({ _id: userId })];
+            case 2:
+                user = _a.sent();
                 res.status(consts_1.OK).json({
                     status: consts_1.OK,
                     message: "Successfully fetched.",
                     data: installments,
+                    points: user === null || user === void 0 ? void 0 : user.points,
+                    wallet: user === null || user === void 0 ? void 0 : user.wallet,
                     endpoint: req.originalUrl,
                 });
-                return [3 /*break*/, 3];
-            case 2:
+                return [3 /*break*/, 4];
+            case 3:
                 error_1 = _a.sent();
                 next(error_1);
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
         }
     });
 }); };
