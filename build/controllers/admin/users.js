@@ -253,7 +253,7 @@ function getLastChild(parentId, placement, sId, uId) {
                             childs: {
                                 childId: uId,
                                 placement: placement,
-                                sponserBy: sId
+                                sponserBy: sId,
                             },
                         },
                     })];
@@ -279,56 +279,63 @@ function getLastChild(parentId, placement, sId, uId) {
     });
 }
 var updateUsers = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, user, _a, months, price, index, error_5;
+    var id, user, pack, _a, months, price, index, error_5;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                _b.trys.push([0, 9, , 10]);
+                _b.trys.push([0, 11, , 12]);
                 id = req.params.id;
                 return [4 /*yield*/, models_1.UserModel.findById(id)];
             case 1:
                 user = _b.sent();
                 if (!user)
                     return [2 /*return*/, next(errors_1.ApiError.BadRequest("user not exist!"))];
-                if (!user.packageId)
-                    return [2 /*return*/, next(errors_1.ApiError.BadRequest("package not selected!"))];
-                return [4 /*yield*/, models_1.InstallmentsModel.exists({ userId: id })];
+                if (!!user.packageId) return [3 /*break*/, 3];
+                return [4 /*yield*/, models_1.PackagesModel.findOne()];
             case 2:
-                if (!!(_b.sent())) return [3 /*break*/, 7];
+                pack = _b.sent();
+                user.packageId = pack._id;
+                _b.label = 3;
+            case 3: return [4 /*yield*/, models_1.InstallmentsModel.exists({ userId: id })];
+            case 4:
+                if (!!(_b.sent())) return [3 /*break*/, 9];
                 return [4 /*yield*/, models_1.PackagesModel.findById(user.packageId)];
-            case 3:
+            case 5:
                 _a = _b.sent(), months = _a.months, price = _a.price;
                 index = 0;
-                _b.label = 4;
-            case 4:
-                if (!(index < months)) return [3 /*break*/, 7];
+                _b.label = 6;
+            case 6:
+                if (!(index < months)) return [3 /*break*/, 9];
                 return [4 /*yield*/, models_1.InstallmentsModel.create({
                         userId: id,
                         price: price,
                         status: index === 0 && true,
                     })];
-            case 5:
-                _b.sent();
-                _b.label = 6;
-            case 6:
-                index++;
-                return [3 /*break*/, 4];
             case 7:
+                _b.sent();
+                _b.label = 8;
+            case 8:
+                index++;
+                return [3 /*break*/, 6];
+            case 9:
+                if (!user.isCompleted && user.points === 0) {
+                    user.points = 100;
+                }
                 user.isCompleted = !user.isCompleted;
                 return [4 /*yield*/, user.save()];
-            case 8:
+            case 10:
                 _b.sent();
                 res.status(consts_1.OK).json({
                     status: consts_1.OK,
                     message: "Successfully updated.",
                     endpoint: req.originalUrl,
                 });
-                return [3 /*break*/, 10];
-            case 9:
+                return [3 /*break*/, 12];
+            case 11:
                 error_5 = _b.sent();
                 next(error_5);
-                return [3 /*break*/, 10];
-            case 10: return [2 /*return*/];
+                return [3 /*break*/, 12];
+            case 12: return [2 /*return*/];
         }
     });
 }); };

@@ -19,6 +19,8 @@ var userDto = function (res) {
         lastName: res.lastName,
         email: res.email,
         uId: res.uId,
+        wallet: res.wallet,
+        points: res.points,
         accessToken: "",
     };
 };

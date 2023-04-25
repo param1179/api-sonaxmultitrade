@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updatePayment = exports.getInstallments = void 0;
+exports.updatePoints = exports.updatePayment = exports.getInstallments = void 0;
 var consts_1 = require("../../consts");
 var models_1 = require("../../database/models");
 var errors_1 = require("../../errors");
@@ -72,7 +72,7 @@ var updatePayment = function (req, res, next) { return __awaiter(void 0, void 0,
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 6, , 7]);
+                _a.trys.push([0, 7, , 8]);
                 id = req.params.id;
                 return [4 /*yield*/, models_1.InstallmentsModel.findById(id)];
             case 1:
@@ -82,11 +82,14 @@ var updatePayment = function (req, res, next) { return __awaiter(void 0, void 0,
                 return [4 /*yield*/, models_1.InstallmentsModel.updateOne({ _id: id }, { status: true })];
             case 2:
                 _a.sent();
+                return [4 /*yield*/, models_1.UserModel.updateOne({ _id: payment === null || payment === void 0 ? void 0 : payment.userId }, { $inc: { points: 100 } })];
+            case 3:
+                _a.sent();
                 return [4 /*yield*/, models_1.InstallmentsModel.countDocuments({
                         userId: payment === null || payment === void 0 ? void 0 : payment.userId,
                         status: true,
                     })];
-            case 3:
+            case 4:
                 count = _a.sent();
                 numberof = void 0;
                 switch (count) {
@@ -104,23 +107,63 @@ var updatePayment = function (req, res, next) { return __awaiter(void 0, void 0,
                         break;
                 }
                 return [4 /*yield*/, models_1.UserModel.findById(payment.userId)];
-            case 4:
+            case 5:
                 user = _a.sent();
                 return [4 /*yield*/, (0, services_1.sendOtp)("+91".concat(user === null || user === void 0 ? void 0 : user.mobile), "Welcome to Sonax Multitrade. \"".concat(user === null || user === void 0 ? void 0 : user.uId, "\" your ").concat(numberof, " installment of Rs.").concat(payment.price, " has succeeded. You can login on https://sonaxmultitrade.in . Thank you."))];
-            case 5:
+            case 6:
                 _a.sent();
                 res.status(consts_1.OK).json({
                     status: consts_1.OK,
                     message: "Successfully updated.",
                     endpoint: req.originalUrl,
                 });
-                return [3 /*break*/, 7];
-            case 6:
+                return [3 /*break*/, 8];
+            case 7:
                 error_2 = _a.sent();
                 next(error_2);
-                return [3 /*break*/, 7];
-            case 7: return [2 /*return*/];
+                return [3 /*break*/, 8];
+            case 8: return [2 /*return*/];
         }
     });
 }); };
 exports.updatePayment = updatePayment;
+var updatePoints = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var payments, error_3;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, models_1.InstallmentsModel.aggregate([
+                        { $match: { status: true } },
+                        { $group: { _id: "$userId", count: { $sum: 1 } } },
+                    ])];
+            case 1:
+                payments = _a.sent();
+                payments.forEach(function (item) { return __awaiter(void 0, void 0, void 0, function () {
+                    var totalPoints;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0:
+                                totalPoints = 100 * item.count;
+                                return [4 /*yield*/, models_1.UserModel.updateOne({ _id: item._id }, { points: totalPoints })];
+                            case 1:
+                                _a.sent();
+                                return [2 /*return*/];
+                        }
+                    });
+                }); });
+                res.status(consts_1.OK).json({
+                    status: consts_1.OK,
+                    message: "Successfully updated.",
+                    endpoint: req.originalUrl,
+                });
+                return [3 /*break*/, 3];
+            case 2:
+                error_3 = _a.sent();
+                next(error_3);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+exports.updatePoints = updatePoints;

@@ -96,6 +96,14 @@ const UserSchema = new Schema<IUser>(
       type: String,
       default: null,
     },
+    wallet: {
+      type: Number,
+      default: 0,
+    },
+    points: {
+      type: Number,
+      default: 0,
+    },
     pId: {
       type: Types.ObjectId,
       ref: "User",

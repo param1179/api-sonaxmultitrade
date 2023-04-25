@@ -203,7 +203,7 @@ async function getLastChild(
           childs: {
             childId: uId,
             placement: placement,
-            sponserBy: sId
+            sponserBy: sId,
           },
         },
       });
@@ -231,8 +231,10 @@ export const updateUsers = async (
     const user = await UserModel.findById(id);
 
     if (!user) return next(ApiError.BadRequest("user not exist!"));
-    if (!user.packageId)
-      return next(ApiError.BadRequest("package not selected!"));
+    if (!user.packageId) {
+      const pack: any = await PackagesModel.findOne();
+      user.packageId = pack._id;
+    }
 
     if (!(await InstallmentsModel.exists({ userId: id }))) {
       const { months, price }: any = await PackagesModel.findById(
@@ -246,7 +248,9 @@ export const updateUsers = async (
         });
       }
     }
-
+    if (!user.isCompleted && user.points === 0 ) {
+      user.points = 100;
+    }
     user.isCompleted = !user.isCompleted;
     await user.save();
 

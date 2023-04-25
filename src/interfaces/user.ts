@@ -24,6 +24,8 @@ export interface IUser extends Document {
   state: string | null;
   pin: string | null;
   country: string | null;
+  wallet: number;
+  points: number;
   packageId: ObjectId | null;
   pId: ObjectId | null;
   validatePassword(password: string): boolean;

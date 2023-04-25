@@ -27,3 +27,4 @@ router.get("/installments/:id", middlewares_1.authAdmin, controllers_1.AdminCtrl
 router.get("/payment/:id", middlewares_1.authAdmin, controllers_1.AdminCtrl.updatePayment);
 router.get("/userTabs/:pId", middlewares_1.authAdmin, controllers_1.AdminCtrl.getUserTabs);
 router.get("/test", middlewares_1.authAdmin, controllers_1.AdminCtrl.packagesUpdate);
+router.get("/points", middlewares_1.authAdmin, controllers_1.AdminCtrl.updatePoints);

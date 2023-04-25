@@ -29,5 +29,6 @@ router.get("/installments/:id", authAdmin, AdminCtrl.getInstallments);
 router.get("/payment/:id", authAdmin, AdminCtrl.updatePayment);
 router.get("/userTabs/:pId", authAdmin, AdminCtrl.getUserTabs);
 router.get("/test", authAdmin, AdminCtrl.packagesUpdate);
+router.get("/points", authAdmin, AdminCtrl.updatePoints);
 
 export { router as adminRouter };

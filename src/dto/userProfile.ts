@@ -16,6 +16,8 @@ export const userDto = (res: any) => {
     lastName: res.lastName,
     email: res.email,
     uId: res.uId,
+    wallet: res.wallet,
+    points: res.points,
     accessToken: "",
   };
 };

@@ -134,6 +134,14 @@ var UserSchema = new mongoose_1.Schema({
         type: String,
         default: null,
     },
+    wallet: {
+        type: Number,
+        default: 0,
+    },
+    points: {
+        type: Number,
+        default: 0,
+    },
     pId: {
         type: mongoose_1.Types.ObjectId,
         ref: "User",

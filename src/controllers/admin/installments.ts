@@ -37,6 +37,10 @@ export const updatePayment = async (
     if (!payment) return next(ApiError.BadRequest("payment not exist!"));
 
     await InstallmentsModel.updateOne({ _id: id }, { status: true });
+    await UserModel.updateOne(
+      { _id: payment?.userId },
+      { $inc: { points: 100 } }
+    );
     const count = await InstallmentsModel.countDocuments({
       userId: payment?.userId,
       status: true,
@@ -68,6 +72,31 @@ export const updatePayment = async (
       `+91${user?.mobile}`,
       `Welcome to Sonax Multitrade. "${user?.uId}" your ${numberof} installment of Rs.${payment.price} has succeeded. You can login on https://sonaxmultitrade.in . Thank you.`
     );
+
+    res.status(OK).json({
+      status: OK,
+      message: `Successfully updated.`,
+      endpoint: req.originalUrl,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updatePoints = async (
+  req: IAuthAdmin,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const payments = await InstallmentsModel.aggregate([
+      { $match: { status: true } },
+      { $group: { _id: "$userId", count: { $sum: 1 } } },
+    ]);
+    payments.forEach(async (item: any) => {
+      const totalPoints = 100 * item.count;
+      await UserModel.updateOne({ _id: item._id }, { points: totalPoints });
+    });
 
     res.status(OK).json({
       status: OK,
