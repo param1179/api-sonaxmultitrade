@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -36,18 +47,18 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userUpdate = exports.userInfo = exports.updateUsers = exports.adminGetUsers = exports.adminCreateUser = exports.getAllUsers = exports.getUsers = void 0;
+exports.userUpdate = exports.userInfo = exports.updateSponser = exports.updateUsers = exports.adminGetUsers = exports.adminCreateUser = exports.getAllUsers = exports.getUsers = void 0;
 var consts_1 = require("../../consts");
 var models_1 = require("../../database/models");
 var dto_1 = require("../../dto");
 var errors_1 = require("../../errors");
 var services_1 = require("../../services");
 var getUsers = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, _b, limit, _c, page, _d, search, users, totalUsers, error_1;
+    var _a, _b, limit, _c, page, _d, search, users, totalUsers, editUsers, allUsers, error_1;
     return __generator(this, function (_e) {
         switch (_e.label) {
             case 0:
-                _e.trys.push([0, 3, , 4]);
+                _e.trys.push([0, 4, , 5]);
                 _a = req.query, _b = _a.limit, limit = _b === void 0 ? 10 : _b, _c = _a.page, page = _c === void 0 ? 1 : _c, _d = _a.search, search = _d === void 0 ? "" : _d;
                 return [4 /*yield*/, models_1.UserModel.find({
                         uId: { $regex: search, $options: "i" },
@@ -57,22 +68,44 @@ var getUsers = function (req, res, next) { return __awaiter(void 0, void 0, void
                         .limit(limit)];
             case 1:
                 users = _e.sent();
-                return [4 /*yield*/, models_1.UserModel.find().countDocuments()];
+                return [4 /*yield*/, models_1.UserModel.find({
+                        uId: { $regex: search, $options: "i" },
+                    }).countDocuments()];
             case 2:
                 totalUsers = _e.sent();
+                editUsers = users.map(function (user) { return __awaiter(void 0, void 0, void 0, function () {
+                    var newUser, childs;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0:
+                                newUser = __assign(__assign({}, user.toJSON()), { sponserBy: {} });
+                                return [4 /*yield*/, models_1.UserSponserByModel.find({ "childs.childId": user._id }, { _id: 0, childs: { $elemMatch: { childId: user._id } } }).populate({
+                                        path: "childs.sponserBy",
+                                        select: "firstName lastName uId",
+                                    })];
+                            case 1:
+                                childs = _a.sent();
+                                newUser.sponserBy = childs;
+                                return [2 /*return*/, newUser];
+                        }
+                    });
+                }); });
+                return [4 /*yield*/, Promise.all(editUsers)];
+            case 3:
+                allUsers = _e.sent();
                 res.status(consts_1.OK).json({
                     status: consts_1.OK,
                     message: "successfully.",
-                    users: users,
+                    users: allUsers,
                     totalUsers: totalUsers,
                     endpoint: req.originalUrl,
                 });
-                return [3 /*break*/, 4];
-            case 3:
+                return [3 /*break*/, 5];
+            case 4:
                 error_1 = _e.sent();
                 next(error_1);
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
+                return [3 /*break*/, 5];
+            case 5: return [2 /*return*/];
         }
     });
 }); };
@@ -340,8 +373,33 @@ var updateUsers = function (req, res, next) { return __awaiter(void 0, void 0, v
     });
 }); };
 exports.updateUsers = updateUsers;
+var updateSponser = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, sid, uid, error_6;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _b.trys.push([0, 2, , 3]);
+                _a = req.params, sid = _a.sid, uid = _a.uid;
+                return [4 /*yield*/, models_1.UserSponserByModel.updateOne({ "childs.childId": uid }, { $set: { "childs.$.sponserBy": sid } })];
+            case 1:
+                _b.sent();
+                res.status(consts_1.OK).json({
+                    status: consts_1.OK,
+                    message: "Successfully updated.",
+                    endpoint: req.originalUrl,
+                });
+                return [3 /*break*/, 3];
+            case 2:
+                error_6 = _b.sent();
+                next(error_6);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+exports.updateSponser = updateSponser;
 var userInfo = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, user, error_6;
+    var id, user, error_7;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -360,8 +418,8 @@ var userInfo = function (req, res, next) { return __awaiter(void 0, void 0, void
                 });
                 return [3 /*break*/, 3];
             case 2:
-                error_6 = _a.sent();
-                next(error_6);
+                error_7 = _a.sent();
+                next(error_7);
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
@@ -369,7 +427,7 @@ var userInfo = function (req, res, next) { return __awaiter(void 0, void 0, void
 }); };
 exports.userInfo = userInfo;
 var userUpdate = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var body, id, user, error_7;
+    var body, id, user, error_8;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -391,8 +449,8 @@ var userUpdate = function (req, res, next) { return __awaiter(void 0, void 0, vo
                 });
                 return [3 /*break*/, 4];
             case 3:
-                error_7 = _a.sent();
-                next(error_7);
+                error_8 = _a.sent();
+                next(error_8);
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }

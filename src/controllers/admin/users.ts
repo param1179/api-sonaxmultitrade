@@ -35,12 +35,29 @@ export const getUsers = async (
       .select("_id firstName lastName uId isCompleted createdAt updatedAt")
       .skip((page - 1) * limit)
       .limit(limit);
-    const totalUsers = await UserModel.find().countDocuments();
+    const totalUsers = await UserModel.find({
+      uId: { $regex: search, $options: "i" },
+    }).countDocuments();
+
+    const editUsers = users.map(async (user: any) => {
+      var newUser = { ...user.toJSON(), sponserBy: {} };
+      const childs = await UserSponserByModel.find(
+        { "childs.childId": user._id },
+        { _id: 0, childs: { $elemMatch: { childId: user._id } } }
+      ).populate({
+        path: "childs.sponserBy",
+        select: "firstName lastName uId",
+      });
+      newUser.sponserBy = childs;
+      return newUser;
+    });
+
+    const allUsers = await Promise.all(editUsers);
 
     res.status(OK).json({
       status: OK,
       message: `successfully.`,
-      users,
+      users: allUsers,
       totalUsers,
       endpoint: req.originalUrl,
     });
@@ -248,11 +265,34 @@ export const updateUsers = async (
         });
       }
     }
-    if (!user.isCompleted && user.points === 0 ) {
+    if (!user.isCompleted && user.points === 0) {
       user.points = 100;
     }
     user.isCompleted = !user.isCompleted;
     await user.save();
+
+    res.status(OK).json({
+      status: OK,
+      message: `Successfully updated.`,
+      endpoint: req.originalUrl,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateSponser = async (
+  req: IAuthAdmin,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { sid, uid } = req.params;
+
+    await UserSponserByModel.updateOne(
+      { "childs.childId": uid },
+      { $set: { "childs.$.sponserBy": sid } }
+    );
 
     res.status(OK).json({
       status: OK,

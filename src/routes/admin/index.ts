@@ -23,6 +23,7 @@ router.get("/packages", authAdmin, AdminCtrl.packages);
 router.get("/users", authAdmin, AdminCtrl.getUsers);
 router.get("/users/list", authAdmin, AdminCtrl.getAllUsers);
 router.get("/user/:id", authAdmin, AdminCtrl.updateUsers);
+router.get("/sponser/:sid/:uid", authAdmin, AdminCtrl.updateSponser);
 router.get("/info/:id", authAdmin, AdminCtrl.userInfo);
 router.put("/user/:id", authAdmin, AdminCtrl.userUpdate);
 router.get("/installments/:id", authAdmin, AdminCtrl.getInstallments);

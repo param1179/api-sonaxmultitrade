@@ -45,7 +45,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     return to.concat(ar || Array.prototype.slice.call(from));
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.teamList = exports.teams = void 0;
+exports.teamList = exports.teamsDirect = exports.teams = void 0;
 var consts_1 = require("../../consts");
 var models_1 = require("../../database/models");
 var userServices_1 = require("../../services/userServices");
@@ -79,8 +79,34 @@ var teams = function (req, res, next) { return __awaiter(void 0, void 0, void 0,
     });
 }); };
 exports.teams = teams;
+var teamsDirect = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var userId, direct, error_2;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                userId = req.userId;
+                return [4 /*yield*/, models_1.UserSponserByModel.countDocuments({ "childs.sponserBy": userId }, { _id: 0, childs: { $elemMatch: { sponserBy: userId } } })];
+            case 1:
+                direct = _a.sent();
+                res.status(consts_1.OK).json({
+                    status: consts_1.OK,
+                    message: "Successfully fetched.",
+                    direct: direct,
+                    endpoint: req.originalUrl,
+                });
+                return [3 /*break*/, 3];
+            case 2:
+                error_2 = _a.sent();
+                next(error_2);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+exports.teamsDirect = teamsDirect;
 var teamList = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var userId, position_1, child_1, cobine_1, active, inActive, error_2;
+    var userId, position_1, child_1, cobine_1, active, inActive, error_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -122,8 +148,8 @@ var teamList = function (req, res, next) { return __awaiter(void 0, void 0, void
                 });
                 return [3 /*break*/, 3];
             case 2:
-                error_2 = _a.sent();
-                next(error_2);
+                error_3 = _a.sent();
+                next(error_3);
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }

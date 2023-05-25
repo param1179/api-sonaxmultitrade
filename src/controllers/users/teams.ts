@@ -28,6 +28,25 @@ export const teams = async (req: IAuth, res: Response, next: NextFunction) => {
   }
 };
 
+export const teamsDirect = async (req: IAuth, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.userId;
+    const direct = await UserSponserByModel.countDocuments(
+      { "childs.sponserBy": userId },
+      { _id: 0, childs: { $elemMatch: { sponserBy: userId } } }
+    )
+
+    res.status(OK).json({
+      status: OK,
+      message: `Successfully fetched.`,
+      direct,
+      endpoint: req.originalUrl,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const teamList = async (
   req: IAuth,
   res: Response,

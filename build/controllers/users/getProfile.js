@@ -56,9 +56,10 @@ var getProfile = function (req, res, next) { return __awaiter(void 0, void 0, vo
             case 2:
                 _a.nominee = _c.sent();
                 _b = userDto;
-                return [4 /*yield*/, models_1.UserSponserByModel.findOne({ childs: { $elemMatch: { childId: userId } } })
-                        .populate("parentId childs.childId", "firstName lastName uId pId email mobile")
-                        .exec()];
+                return [4 /*yield*/, models_1.UserSponserByModel.find({ "childs.childId": userId }, { _id: 0, childs: { $elemMatch: { childId: userId } } }).populate({
+                        path: "childs.sponserBy",
+                        select: "firstName lastName uId email mobile",
+                    })];
             case 3:
                 _b.sponserBY = _c.sent();
                 res.status(consts_1.OK).json({
