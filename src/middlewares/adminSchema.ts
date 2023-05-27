@@ -26,3 +26,9 @@ export const createRewards = yup.object({
     reward: yup.string().required("Reward name is require field!"),
   }),
 });
+
+export const userChangePasswordSchemaByAdmin = yup.object({
+  body: yup.object({
+    password: yup.string().max(15).required(),
+  }),
+});

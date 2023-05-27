@@ -23,7 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createRewards = exports.createUser = exports.adminLoginSchema = void 0;
+exports.userChangePasswordSchemaByAdmin = exports.createRewards = exports.createUser = exports.adminLoginSchema = void 0;
 var yup = __importStar(require("yup"));
 exports.adminLoginSchema = yup.object({
     body: yup.object({
@@ -47,5 +47,10 @@ exports.createRewards = yup.object({
         rewardLevel: yup.string().required("Reward Level is require field!"),
         onPairs: yup.string().required("Pairs is require field!"),
         reward: yup.string().required("Reward name is require field!"),
+    }),
+});
+exports.userChangePasswordSchemaByAdmin = yup.object({
+    body: yup.object({
+        password: yup.string().max(15).required(),
     }),
 });

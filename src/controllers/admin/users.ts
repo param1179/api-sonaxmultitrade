@@ -354,3 +354,31 @@ export const userUpdate = async (
     next(error);
   }
 };
+
+export const changePAsswordByAdmin = async (
+  req: IAuthAdmin,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { body } = req;
+    const { id } = req.params;
+    const user = await UserModel.findById(id);
+    if (!user) return next(ApiError.BadRequest("User not found!"));
+
+    await UserModel.findOneAndUpdate(
+      { _id: id },
+      { password: body.password },
+      { useFindAndModify: false }
+    );
+
+    res.status(OK).json({
+      status: OK,
+      message: `Updated successfully.`,
+      endpoint: req.originalUrl,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+

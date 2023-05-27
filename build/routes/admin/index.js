@@ -16,6 +16,7 @@ router.get("/profile", controllers_1.AdminCtrl.adminProfile);
 //Users Actions by Admin
 router.post("/users/add", middlewares_1.authAdmin, (0, middlewares_1.validate)(middlewares_1.createUser), controllers_1.AdminCtrl.adminCreateUser);
 router.post("/rewards", middlewares_1.authAdmin, (0, middlewares_1.validate)(middlewares_1.createRewards), controllers_1.AdminCtrl.createRewards);
+router.post("/changePassword/:id", middlewares_1.authAdmin, (0, middlewares_1.validate)(middlewares_1.userChangePasswordSchemaByAdmin), controllers_1.AdminCtrl.changePAsswordByAdmin);
 router.get("/rewards", middlewares_1.authAdmin, controllers_1.AdminCtrl.getRewards);
 router.get("/packages", middlewares_1.authAdmin, controllers_1.AdminCtrl.packages);
 router.get("/users", middlewares_1.authAdmin, controllers_1.AdminCtrl.getUsers);

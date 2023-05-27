@@ -6,6 +6,7 @@ import {
   createUser,
   authAdmin,
   createRewards,
+  userChangePasswordSchemaByAdmin,
 } from "../../middlewares";
 
 const router = express.Router();
@@ -18,6 +19,7 @@ router.get("/profile", AdminCtrl.adminProfile);
 //Users Actions by Admin
 router.post("/users/add", authAdmin, validate(createUser), AdminCtrl.adminCreateUser);
 router.post("/rewards", authAdmin, validate(createRewards), AdminCtrl.createRewards);
+router.post("/changePassword/:id", authAdmin, validate(userChangePasswordSchemaByAdmin), AdminCtrl.changePAsswordByAdmin);
 router.get("/rewards", authAdmin, AdminCtrl.getRewards);
 router.get("/packages", authAdmin, AdminCtrl.packages);
 router.get("/users", authAdmin, AdminCtrl.getUsers);
