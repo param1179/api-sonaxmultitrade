@@ -45,7 +45,7 @@ var getRewards = function (req, res, next) { return __awaiter(void 0, void 0, vo
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, models_1.RewardsModel.find()];
+                return [4 /*yield*/, models_1.RewardsModel.find().sort({ createdAt: 1 })];
             case 1:
                 rewards = _a.sent();
                 res.status(consts_1.OK).json({

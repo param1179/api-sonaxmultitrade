@@ -30,7 +30,7 @@ export const getRewards = async (
     next: NextFunction
   ) => {
     try {
-      const rewards = await RewardsModel.find();
+      const rewards = await RewardsModel.find().sort({createdAt: 1});
   
       res.status(OK).json({
         status: OK,

@@ -38,7 +38,7 @@ exports.createUser = yup.object({
         gender: yup.string().required(),
         dob: yup.date().required(),
         mobile: yup.number().integer().required(),
-        email: yup.string().email().required(),
+        email: yup.string().email().optional(),
         password: yup.string().min(2).required(),
     }),
 });
