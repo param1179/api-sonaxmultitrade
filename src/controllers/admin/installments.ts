@@ -12,7 +12,7 @@ export const getInstallments = async (
 ) => {
   try {
     const { id } = req.params;
-    const installments = await InstallmentsModel.find({ userId: id });
+    const installments = await InstallmentsModel.find({ userId: id }).sort({createdAt: 1});
 
     res.status(OK).json({
       status: OK,

@@ -46,7 +46,7 @@ var getInstallments = function (req, res, next) { return __awaiter(void 0, void 
             case 0:
                 _a.trys.push([0, 3, , 4]);
                 userId = req.userId;
-                return [4 /*yield*/, models_1.InstallmentsModel.find({ userId: userId })];
+                return [4 /*yield*/, models_1.InstallmentsModel.find({ userId: userId }).sort({ createdAt: 1 })];
             case 1:
                 installments = _a.sent();
                 return [4 /*yield*/, models_1.UserModel.findOne({ _id: userId })];

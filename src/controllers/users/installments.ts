@@ -10,7 +10,7 @@ export const getInstallments = async (
 ) => {
   try {
     const {userId} = req
-    const installments = await InstallmentsModel.find({userId: userId});
+    const installments = await InstallmentsModel.find({userId: userId}).sort({createdAt: 1});
     const user = await UserModel.findOne({_id: userId});
 
     res.status(OK).json({

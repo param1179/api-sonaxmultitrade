@@ -48,7 +48,7 @@ var getInstallments = function (req, res, next) { return __awaiter(void 0, void 
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 id = req.params.id;
-                return [4 /*yield*/, models_1.InstallmentsModel.find({ userId: id })];
+                return [4 /*yield*/, models_1.InstallmentsModel.find({ userId: id }).sort({ createdAt: 1 })];
             case 1:
                 installments = _a.sent();
                 res.status(consts_1.OK).json({
