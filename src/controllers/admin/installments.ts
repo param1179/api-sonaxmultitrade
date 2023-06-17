@@ -1,6 +1,10 @@
 import { NextFunction, Response } from "express";
 import { OK } from "../../consts";
-import { InstallmentsModel, UserModel } from "../../database/models";
+import {
+  InstallmentsModel,
+  UserModel,
+  UserSponserByModel,
+} from "../../database/models";
 import { ApiError } from "../../errors";
 import { IAuthAdmin } from "../../interfaces";
 import { sendOtp } from "../../services";
@@ -12,7 +16,9 @@ export const getInstallments = async (
 ) => {
   try {
     const { id } = req.params;
-    const installments = await InstallmentsModel.find({ userId: id }).sort({createdAt: 1});
+    const installments = await InstallmentsModel.find({ userId: id }).sort({
+      createdAt: 1,
+    });
 
     res.status(OK).json({
       status: OK,
@@ -41,6 +47,22 @@ export const updatePayment = async (
       { _id: payment?.userId },
       { $inc: { points: 100 } }
     );
+
+    const directBY = await UserSponserByModel.findOne(
+      { "childs.childId": payment?.userId },
+      {
+        _id: 0,
+        childs: {
+          $elemMatch: { childId: payment?.userId },
+        },
+      }
+    );
+
+    if (directBY && directBY?.childs[0].sponserBy) {
+      await UserModel.findByIdAndUpdate(directBY?.childs[0].sponserBy, {
+        wallet: 100,
+      });
+    }
     const count = await InstallmentsModel.countDocuments({
       userId: payment?.userId,
       status: true,

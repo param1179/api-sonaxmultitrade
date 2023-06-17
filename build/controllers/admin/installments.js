@@ -48,7 +48,9 @@ var getInstallments = function (req, res, next) { return __awaiter(void 0, void 
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 id = req.params.id;
-                return [4 /*yield*/, models_1.InstallmentsModel.find({ userId: id }).sort({ createdAt: 1 })];
+                return [4 /*yield*/, models_1.InstallmentsModel.find({ userId: id }).sort({
+                        createdAt: 1,
+                    })];
             case 1:
                 installments = _a.sent();
                 res.status(consts_1.OK).json({
@@ -68,11 +70,11 @@ var getInstallments = function (req, res, next) { return __awaiter(void 0, void 
 }); };
 exports.getInstallments = getInstallments;
 var updatePayment = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, payment, count, numberof, user, error_2;
+    var id, payment, directBY, count, numberof, user, error_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 7, , 8]);
+                _a.trys.push([0, 10, , 11]);
                 id = req.params.id;
                 return [4 /*yield*/, models_1.InstallmentsModel.findById(id)];
             case 1:
@@ -85,11 +87,26 @@ var updatePayment = function (req, res, next) { return __awaiter(void 0, void 0,
                 return [4 /*yield*/, models_1.UserModel.updateOne({ _id: payment === null || payment === void 0 ? void 0 : payment.userId }, { $inc: { points: 100 } })];
             case 3:
                 _a.sent();
-                return [4 /*yield*/, models_1.InstallmentsModel.countDocuments({
-                        userId: payment === null || payment === void 0 ? void 0 : payment.userId,
-                        status: true,
+                return [4 /*yield*/, models_1.UserSponserByModel.findOne({ "childs.childId": payment === null || payment === void 0 ? void 0 : payment.userId }, {
+                        _id: 0,
+                        childs: {
+                            $elemMatch: { childId: payment === null || payment === void 0 ? void 0 : payment.userId },
+                        },
                     })];
             case 4:
+                directBY = _a.sent();
+                if (!(directBY && (directBY === null || directBY === void 0 ? void 0 : directBY.childs[0].sponserBy))) return [3 /*break*/, 6];
+                return [4 /*yield*/, models_1.UserModel.findByIdAndUpdate(directBY === null || directBY === void 0 ? void 0 : directBY.childs[0].sponserBy, {
+                        wallet: 100,
+                    })];
+            case 5:
+                _a.sent();
+                _a.label = 6;
+            case 6: return [4 /*yield*/, models_1.InstallmentsModel.countDocuments({
+                    userId: payment === null || payment === void 0 ? void 0 : payment.userId,
+                    status: true,
+                })];
+            case 7:
                 count = _a.sent();
                 numberof = void 0;
                 switch (count) {
@@ -107,22 +124,22 @@ var updatePayment = function (req, res, next) { return __awaiter(void 0, void 0,
                         break;
                 }
                 return [4 /*yield*/, models_1.UserModel.findById(payment.userId)];
-            case 5:
+            case 8:
                 user = _a.sent();
                 return [4 /*yield*/, (0, services_1.sendOtp)("+91".concat(user === null || user === void 0 ? void 0 : user.mobile), "Welcome to Sonax Multitrade. \"".concat(user === null || user === void 0 ? void 0 : user.uId, "\" your ").concat(numberof, " installment of Rs.").concat(payment.price, " has succeeded. You can login on https://sonaxmultitrade.in . Thank you."))];
-            case 6:
+            case 9:
                 _a.sent();
                 res.status(consts_1.OK).json({
                     status: consts_1.OK,
                     message: "Successfully updated.",
                     endpoint: req.originalUrl,
                 });
-                return [3 /*break*/, 8];
-            case 7:
+                return [3 /*break*/, 11];
+            case 10:
                 error_2 = _a.sent();
                 next(error_2);
-                return [3 /*break*/, 8];
-            case 8: return [2 /*return*/];
+                return [3 /*break*/, 11];
+            case 11: return [2 /*return*/];
         }
     });
 }); };
