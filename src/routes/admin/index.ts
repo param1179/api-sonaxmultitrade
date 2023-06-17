@@ -33,5 +33,6 @@ router.get("/payment/:id", authAdmin, AdminCtrl.updatePayment);
 router.get("/userTabs/:pId", authAdmin, AdminCtrl.getUserTabs);
 router.get("/test", authAdmin, AdminCtrl.packagesUpdate);
 router.get("/points", authAdmin, AdminCtrl.updatePoints);
+router.get("/wallet/:id", authAdmin, AdminCtrl.userWallet);
 
 export { router as adminRouter };

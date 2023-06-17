@@ -47,7 +47,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.changePAsswordByAdmin = exports.userUpdate = exports.userInfo = exports.updateSponser = exports.updateUsers = exports.adminGetUsers = exports.adminCreateUser = exports.getAllUsers = exports.getUsers = void 0;
+exports.userWallet = exports.changePAsswordByAdmin = exports.userUpdate = exports.userInfo = exports.updateSponser = exports.updateUsers = exports.adminGetUsers = exports.adminCreateUser = exports.getAllUsers = exports.getUsers = void 0;
 var consts_1 = require("../../consts");
 var models_1 = require("../../database/models");
 var walletHistory_1 = require("../../database/models/walletHistory");
@@ -626,3 +626,35 @@ var changePAsswordByAdmin = function (req, res, next) { return __awaiter(void 0,
     });
 }); };
 exports.changePAsswordByAdmin = changePAsswordByAdmin;
+var userWallet = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, user, walletHistory, error_10;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 3, , 4]);
+                id = req.params.id;
+                return [4 /*yield*/, models_1.UserModel.findById(id).select("wallet points")];
+            case 1:
+                user = _a.sent();
+                if (!user)
+                    return [2 /*return*/, next(errors_1.ApiError.BadRequest("User not found!"))];
+                return [4 /*yield*/, walletHistory_1.WalletHistoryModel.find({ userId: id }).populate("paymentBy", "uId firstName lastName").sort({ createdAt: 1 })];
+            case 2:
+                walletHistory = _a.sent();
+                res.status(consts_1.OK).json({
+                    status: consts_1.OK,
+                    message: "Updated successfully.",
+                    user: user,
+                    walletHistory: walletHistory,
+                    endpoint: req.originalUrl,
+                });
+                return [3 /*break*/, 4];
+            case 3:
+                error_10 = _a.sent();
+                next(error_10);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); };
+exports.userWallet = userWallet;

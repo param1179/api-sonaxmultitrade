@@ -30,3 +30,4 @@ router.get("/payment/:id", middlewares_1.authAdmin, controllers_1.AdminCtrl.upda
 router.get("/userTabs/:pId", middlewares_1.authAdmin, controllers_1.AdminCtrl.getUserTabs);
 router.get("/test", middlewares_1.authAdmin, controllers_1.AdminCtrl.packagesUpdate);
 router.get("/points", middlewares_1.authAdmin, controllers_1.AdminCtrl.updatePoints);
+router.get("/wallet/:id", middlewares_1.authAdmin, controllers_1.AdminCtrl.userWallet);
