@@ -61,7 +61,22 @@ var getUsers = function (req, res, next) { return __awaiter(void 0, void 0, void
                 _e.trys.push([0, 4, , 5]);
                 _a = req.query, _b = _a.limit, limit = _b === void 0 ? 10 : _b, _c = _a.page, page = _c === void 0 ? 1 : _c, _d = _a.search, search = _d === void 0 ? "" : _d;
                 return [4 /*yield*/, models_1.UserModel.find({
-                        uId: { $regex: search, $options: "i" },
+                        $or: [
+                            {
+                                uId: { $regex: search, $options: "i" },
+                            },
+                            {
+                                $expr: {
+                                    $regexMatch: {
+                                        input: {
+                                            $concat: ["$firstName", " ", "$lastName"],
+                                        },
+                                        regex: search,
+                                        options: "i",
+                                    },
+                                },
+                            },
+                        ],
                     })
                         .select("_id firstName lastName uId isCompleted createdAt updatedAt")
                         .skip((page - 1) * limit)

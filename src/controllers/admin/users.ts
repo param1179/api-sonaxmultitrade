@@ -30,7 +30,22 @@ export const getUsers = async (
     };
 
     const users = await UserModel.find({
-      uId: { $regex: search, $options: "i" },
+      $or: [
+        {
+          uId: { $regex: search, $options: "i" },
+        },
+        {
+          $expr: {
+            $regexMatch: {
+              input: {
+                $concat: ["$firstName", " ", "$lastName"],
+              },
+              regex: search,
+              options: "i",
+            },
+          },
+        },
+      ],
     })
       .select("_id firstName lastName uId isCompleted createdAt updatedAt")
       .skip((page - 1) * limit)
