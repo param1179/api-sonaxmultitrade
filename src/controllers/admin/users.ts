@@ -49,7 +49,8 @@ export const getUsers = async (
     })
       .select("_id firstName lastName uId isCompleted createdAt updatedAt")
       .skip((page - 1) * limit)
-      .limit(limit);
+      .limit(limit)
+      .sort({createdAt: 1});
     const totalUsers = await UserModel.find({
       uId: { $regex: search, $options: "i" },
     }).countDocuments();

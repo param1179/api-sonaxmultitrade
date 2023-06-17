@@ -80,7 +80,8 @@ var getUsers = function (req, res, next) { return __awaiter(void 0, void 0, void
                     })
                         .select("_id firstName lastName uId isCompleted createdAt updatedAt")
                         .skip((page - 1) * limit)
-                        .limit(limit)];
+                        .limit(limit)
+                        .sort({ createdAt: 1 })];
             case 1:
                 users = _e.sent();
                 return [4 /*yield*/, models_1.UserModel.find({
