@@ -7,6 +7,7 @@ import {
   UserNomineeModel,
   UserSponserByModel,
 } from "../../database/models";
+import { WalletHistoryModel } from "../../database/models/walletHistory";
 import { adminUserDto } from "../../dto";
 import { ApiError } from "../../errors";
 import { ID } from "../../helpers";
@@ -297,6 +298,13 @@ export const updateUsers = async (
         $inc: { wallet: 300 },
       });
 
+      await WalletHistoryModel.create({
+        userId: firstLevel?.childs[0].sponserBy,
+        paymentBy: firstLevel?.childs[0].sponserBy,
+        levelBy: 1,
+        payment: 300
+      })
+
       const secondLevel = await UserSponserByModel.findOne(
         { "childs.childId": firstLevel?.childs[0].sponserBy },
         {
@@ -309,6 +317,13 @@ export const updateUsers = async (
         await UserModel.findByIdAndUpdate(secondLevel?.childs[0].sponserBy, {
           $inc: { wallet: 100 },
         });
+
+        await WalletHistoryModel.create({
+          userId: secondLevel?.childs[0].sponserBy,
+          paymentBy: firstLevel?.childs[0].sponserBy,
+          levelBy: 2,
+          payment: 100
+        })
 
         const thirdLevel = await UserSponserByModel.findOne(
           { "childs.childId": secondLevel?.childs[0].sponserBy },
@@ -324,6 +339,13 @@ export const updateUsers = async (
           await UserModel.findByIdAndUpdate(thirdLevel?.childs[0].sponserBy, {
             $inc: { wallet: 50 },
           });
+
+          await WalletHistoryModel.create({
+            userId: thirdLevel?.childs[0].sponserBy,
+            paymentBy: firstLevel?.childs[0].sponserBy,
+            levelBy: 3,
+            payment: 50
+          })
 
           const fourthLevel = await UserSponserByModel.findOne(
             { "childs.childId": thirdLevel?.childs[0].sponserBy },
@@ -341,6 +363,13 @@ export const updateUsers = async (
               { $inc: { wallet: 30 } }
             );
 
+            await WalletHistoryModel.create({
+              userId: fourthLevel?.childs[0].sponserBy,
+              paymentBy: firstLevel?.childs[0].sponserBy,
+              levelBy: 4,
+              payment: 30
+            })
+
             const fivethLevel = await UserSponserByModel.findOne(
               { "childs.childId": thirdLevel?.childs[0].sponserBy },
               {
@@ -357,6 +386,13 @@ export const updateUsers = async (
                 { $inc: { wallet: 10 } }
               );
 
+              await WalletHistoryModel.create({
+                userId: fivethLevel?.childs[0].sponserBy,
+                paymentBy: firstLevel?.childs[0].sponserBy,
+                levelBy: 5,
+                payment: 10
+              })
+
               const sixthLevel = await UserSponserByModel.findOne(
                 { "childs.childId": fivethLevel?.childs[0].sponserBy },
                 {
@@ -372,6 +408,13 @@ export const updateUsers = async (
                   sixthLevel?.childs[0].sponserBy,
                   { $inc: { wallet: 10 } }
                 );
+
+                await WalletHistoryModel.create({
+                  userId: sixthLevel?.childs[0].sponserBy,
+                  paymentBy: firstLevel?.childs[0].sponserBy,
+                  levelBy: 6,
+                  payment: 10
+                })
               }
             }
           }
