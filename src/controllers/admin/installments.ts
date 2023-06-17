@@ -60,7 +60,7 @@ export const updatePayment = async (
 
     if (directBY && directBY?.childs[0].sponserBy) {
       await UserModel.findByIdAndUpdate(directBY?.childs[0].sponserBy, {
-        wallet: 100,
+        $inc: { wallet: 100 },
       });
     }
     const count = await InstallmentsModel.countDocuments({

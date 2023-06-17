@@ -97,7 +97,7 @@ var updatePayment = function (req, res, next) { return __awaiter(void 0, void 0,
                 directBY = _a.sent();
                 if (!(directBY && (directBY === null || directBY === void 0 ? void 0 : directBY.childs[0].sponserBy))) return [3 /*break*/, 6];
                 return [4 /*yield*/, models_1.UserModel.findByIdAndUpdate(directBY === null || directBY === void 0 ? void 0 : directBY.childs[0].sponserBy, {
-                        wallet: 100,
+                        $inc: { wallet: 100 },
                     })];
             case 5:
                 _a.sent();

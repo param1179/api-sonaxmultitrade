@@ -378,7 +378,7 @@ var updateUsers = function (req, res, next) { return __awaiter(void 0, void 0, v
                 firstLevel = _b.sent();
                 if (!(firstLevel && (firstLevel === null || firstLevel === void 0 ? void 0 : firstLevel.childs[0].sponserBy))) return [3 /*break*/, 23];
                 return [4 /*yield*/, models_1.UserModel.findByIdAndUpdate(firstLevel === null || firstLevel === void 0 ? void 0 : firstLevel.childs[0].sponserBy, {
-                        wallet: 300,
+                        $inc: { wallet: 300 },
                     })];
             case 12:
                 _b.sent();
@@ -390,7 +390,7 @@ var updateUsers = function (req, res, next) { return __awaiter(void 0, void 0, v
                 secondLevel = _b.sent();
                 if (!(secondLevel && (secondLevel === null || secondLevel === void 0 ? void 0 : secondLevel.childs[0].sponserBy))) return [3 /*break*/, 23];
                 return [4 /*yield*/, models_1.UserModel.findByIdAndUpdate(secondLevel === null || secondLevel === void 0 ? void 0 : secondLevel.childs[0].sponserBy, {
-                        wallet: 100,
+                        $inc: { wallet: 100 },
                     })];
             case 14:
                 _b.sent();
@@ -404,7 +404,7 @@ var updateUsers = function (req, res, next) { return __awaiter(void 0, void 0, v
                 thirdLevel = _b.sent();
                 if (!(thirdLevel && (thirdLevel === null || thirdLevel === void 0 ? void 0 : thirdLevel.childs[0].sponserBy))) return [3 /*break*/, 23];
                 return [4 /*yield*/, models_1.UserModel.findByIdAndUpdate(thirdLevel === null || thirdLevel === void 0 ? void 0 : thirdLevel.childs[0].sponserBy, {
-                        wallet: 50,
+                        $inc: { wallet: 50 },
                     })];
             case 16:
                 _b.sent();
@@ -417,7 +417,7 @@ var updateUsers = function (req, res, next) { return __awaiter(void 0, void 0, v
             case 17:
                 fourthLevel = _b.sent();
                 if (!(fourthLevel && (fourthLevel === null || fourthLevel === void 0 ? void 0 : fourthLevel.childs[0].sponserBy))) return [3 /*break*/, 23];
-                return [4 /*yield*/, models_1.UserModel.findByIdAndUpdate(fourthLevel === null || fourthLevel === void 0 ? void 0 : fourthLevel.childs[0].sponserBy, { wallet: 30 })];
+                return [4 /*yield*/, models_1.UserModel.findByIdAndUpdate(fourthLevel === null || fourthLevel === void 0 ? void 0 : fourthLevel.childs[0].sponserBy, { $inc: { wallet: 30 } })];
             case 18:
                 _b.sent();
                 return [4 /*yield*/, models_1.UserSponserByModel.findOne({ "childs.childId": thirdLevel === null || thirdLevel === void 0 ? void 0 : thirdLevel.childs[0].sponserBy }, {
@@ -429,7 +429,7 @@ var updateUsers = function (req, res, next) { return __awaiter(void 0, void 0, v
             case 19:
                 fivethLevel = _b.sent();
                 if (!(fivethLevel && (fivethLevel === null || fivethLevel === void 0 ? void 0 : fivethLevel.childs[0].sponserBy))) return [3 /*break*/, 23];
-                return [4 /*yield*/, models_1.UserModel.findByIdAndUpdate(fivethLevel === null || fivethLevel === void 0 ? void 0 : fivethLevel.childs[0].sponserBy, { wallet: 10 })];
+                return [4 /*yield*/, models_1.UserModel.findByIdAndUpdate(fivethLevel === null || fivethLevel === void 0 ? void 0 : fivethLevel.childs[0].sponserBy, { $inc: { wallet: 10 } })];
             case 20:
                 _b.sent();
                 return [4 /*yield*/, models_1.UserSponserByModel.findOne({ "childs.childId": fivethLevel === null || fivethLevel === void 0 ? void 0 : fivethLevel.childs[0].sponserBy }, {
@@ -441,7 +441,7 @@ var updateUsers = function (req, res, next) { return __awaiter(void 0, void 0, v
             case 21:
                 sixthLevel = _b.sent();
                 if (!(sixthLevel && (sixthLevel === null || sixthLevel === void 0 ? void 0 : sixthLevel.childs[0].sponserBy))) return [3 /*break*/, 23];
-                return [4 /*yield*/, models_1.UserModel.findByIdAndUpdate(sixthLevel === null || sixthLevel === void 0 ? void 0 : sixthLevel.childs[0].sponserBy, { wallet: 10 })];
+                return [4 /*yield*/, models_1.UserModel.findByIdAndUpdate(sixthLevel === null || sixthLevel === void 0 ? void 0 : sixthLevel.childs[0].sponserBy, { $inc: { wallet: 10 } })];
             case 22:
                 _b.sent();
                 _b.label = 23;

@@ -293,7 +293,7 @@ export const updateUsers = async (
 
     if (firstLevel && firstLevel?.childs[0].sponserBy) {
       await UserModel.findByIdAndUpdate(firstLevel?.childs[0].sponserBy, {
-        wallet: 300,
+        $inc: { wallet: 300 },
       });
 
       const secondLevel = await UserSponserByModel.findOne(
@@ -306,7 +306,7 @@ export const updateUsers = async (
 
       if (secondLevel && secondLevel?.childs[0].sponserBy) {
         await UserModel.findByIdAndUpdate(secondLevel?.childs[0].sponserBy, {
-          wallet: 100,
+          $inc: { wallet: 100 },
         });
 
         const thirdLevel = await UserSponserByModel.findOne(
@@ -321,7 +321,7 @@ export const updateUsers = async (
 
         if (thirdLevel && thirdLevel?.childs[0].sponserBy) {
           await UserModel.findByIdAndUpdate(thirdLevel?.childs[0].sponserBy, {
-            wallet: 50,
+            $inc: { wallet: 50 },
           });
 
           const fourthLevel = await UserSponserByModel.findOne(
@@ -337,7 +337,7 @@ export const updateUsers = async (
           if (fourthLevel && fourthLevel?.childs[0].sponserBy) {
             await UserModel.findByIdAndUpdate(
               fourthLevel?.childs[0].sponserBy,
-              { wallet: 30 }
+              { $inc: { wallet: 30 } }
             );
 
             const fivethLevel = await UserSponserByModel.findOne(
@@ -353,7 +353,7 @@ export const updateUsers = async (
             if (fivethLevel && fivethLevel?.childs[0].sponserBy) {
               await UserModel.findByIdAndUpdate(
                 fivethLevel?.childs[0].sponserBy,
-                { wallet: 10 }
+                { $inc: { wallet: 10 } }
               );
 
               const sixthLevel = await UserSponserByModel.findOne(
@@ -369,7 +369,7 @@ export const updateUsers = async (
               if (sixthLevel && sixthLevel?.childs[0].sponserBy) {
                 await UserModel.findByIdAndUpdate(
                   sixthLevel?.childs[0].sponserBy,
-                  { wallet: 10 }
+                  { $inc: { wallet: 10 } }
                 );
               }
             }
