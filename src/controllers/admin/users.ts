@@ -271,6 +271,98 @@ export const updateUsers = async (
     user.isCompleted = !user.isCompleted;
     await user.save();
 
+    const firstLevel = await UserSponserByModel.findOne(
+      { "childs.childId": user._id },
+      { _id: 0, childs: { $elemMatch: { childId: user._id } } }
+    );
+
+    if (firstLevel && firstLevel?.childs[0].sponserBy) {
+      await UserModel.findByIdAndUpdate(firstLevel?.childs[0].sponserBy, {
+        wallet: 300,
+      });
+
+      const secondLevel = await UserSponserByModel.findOne(
+        { "childs.childId": firstLevel?.childs[0].sponserBy },
+        {
+          _id: 0,
+          childs: { $elemMatch: { childId: firstLevel?.childs[0].sponserBy } },
+        }
+      );
+
+      if (secondLevel && secondLevel?.childs[0].sponserBy) {
+        await UserModel.findByIdAndUpdate(secondLevel?.childs[0].sponserBy, {
+          wallet: 100,
+        });
+
+        const thirdLevel = await UserSponserByModel.findOne(
+          { "childs.childId": secondLevel?.childs[0].sponserBy },
+          {
+            _id: 0,
+            childs: {
+              $elemMatch: { childId: secondLevel?.childs[0].sponserBy },
+            },
+          }
+        );
+
+        if (thirdLevel && thirdLevel?.childs[0].sponserBy) {
+          await UserModel.findByIdAndUpdate(thirdLevel?.childs[0].sponserBy, {
+            wallet: 50,
+          });
+
+          const fourthLevel = await UserSponserByModel.findOne(
+            { "childs.childId": thirdLevel?.childs[0].sponserBy },
+            {
+              _id: 0,
+              childs: {
+                $elemMatch: { childId: thirdLevel?.childs[0].sponserBy },
+              },
+            }
+          );
+
+          if (fourthLevel && fourthLevel?.childs[0].sponserBy) {
+            await UserModel.findByIdAndUpdate(
+              fourthLevel?.childs[0].sponserBy,
+              { wallet: 30 }
+            );
+
+            const fivethLevel = await UserSponserByModel.findOne(
+              { "childs.childId": thirdLevel?.childs[0].sponserBy },
+              {
+                _id: 0,
+                childs: {
+                  $elemMatch: { childId: thirdLevel?.childs[0].sponserBy },
+                },
+              }
+            );
+
+            if (fivethLevel && fivethLevel?.childs[0].sponserBy) {
+              await UserModel.findByIdAndUpdate(
+                fivethLevel?.childs[0].sponserBy,
+                { wallet: 10 }
+              );
+
+              const sixthLevel = await UserSponserByModel.findOne(
+                { "childs.childId": fivethLevel?.childs[0].sponserBy },
+                {
+                  _id: 0,
+                  childs: {
+                    $elemMatch: { childId: fivethLevel?.childs[0].sponserBy },
+                  },
+                }
+              );
+
+              if (sixthLevel && sixthLevel?.childs[0].sponserBy) {
+                await UserModel.findByIdAndUpdate(
+                  sixthLevel?.childs[0].sponserBy,
+                  { wallet: 10 }
+                );
+              }
+            }
+          }
+        }
+      }
+    }
+
     res.status(OK).json({
       status: OK,
       message: `Successfully updated.`,
@@ -381,4 +473,3 @@ export const changePAsswordByAdmin = async (
     next(error);
   }
 };
-
