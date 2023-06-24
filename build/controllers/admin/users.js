@@ -638,7 +638,7 @@ var userWallet = function (req, res, next) { return __awaiter(void 0, void 0, vo
                 user = _a.sent();
                 if (!user)
                     return [2 /*return*/, next(errors_1.ApiError.BadRequest("User not found!"))];
-                return [4 /*yield*/, walletHistory_1.WalletHistoryModel.find({ userId: id }).populate("paymentBy", "uId firstName lastName").sort({ createdAt: 1 })];
+                return [4 /*yield*/, walletHistory_1.WalletHistoryModel.find({ userId: id }).populate("paymentBy", "uId firstName lastName").sort({ createdAt: -1 })];
             case 2:
                 walletHistory = _a.sent();
                 res.status(consts_1.OK).json({

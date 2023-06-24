@@ -53,7 +53,7 @@ var getInstallments = function (req, res, next) { return __awaiter(void 0, void 
                 return [4 /*yield*/, models_1.UserModel.findOne({ _id: userId })];
             case 2:
                 user = _a.sent();
-                return [4 /*yield*/, walletHistory_1.WalletHistoryModel.find({ userId: userId }).populate("paymentBy", "uId firstName lastName").sort({ createdAt: 1 })];
+                return [4 /*yield*/, walletHistory_1.WalletHistoryModel.find({ userId: userId }).populate("paymentBy", "uId firstName lastName").sort({ createdAt: -1 })];
             case 3:
                 walletHistory = _a.sent();
                 res.status(consts_1.OK).json({

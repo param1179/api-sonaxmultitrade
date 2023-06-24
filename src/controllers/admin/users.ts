@@ -544,7 +544,7 @@ export const userWallet = async (
     const user = await UserModel.findById(id).select("wallet points");
     if (!user) return next(ApiError.BadRequest("User not found!"));
 
-    const walletHistory = await WalletHistoryModel.find({userId: id}).populate("paymentBy", "uId firstName lastName").sort({createdAt: 1})
+    const walletHistory = await WalletHistoryModel.find({userId: id}).populate("paymentBy", "uId firstName lastName").sort({createdAt: -1})
     res.status(OK).json({
       status: OK,
       message: `Updated successfully.`,

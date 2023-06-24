@@ -13,7 +13,7 @@ export const getInstallments = async (
     const {userId} = req
     const installments = await InstallmentsModel.find({userId: userId}).sort({createdAt: 1});
     const user = await UserModel.findOne({_id: userId});
-    const walletHistory = await WalletHistoryModel.find({userId: userId}).populate("paymentBy", "uId firstName lastName").sort({createdAt: 1})
+    const walletHistory = await WalletHistoryModel.find({userId: userId}).populate("paymentBy", "uId firstName lastName").sort({createdAt: -1})
 
     res.status(OK).json({
       status: OK,
