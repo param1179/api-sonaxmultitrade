@@ -39,12 +39,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getInstallments = void 0;
 var consts_1 = require("../../consts");
 var models_1 = require("../../database/models");
+var walletHistory_1 = require("../../database/models/walletHistory");
 var getInstallments = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var userId, installments, user, error_1;
+    var userId, installments, user, walletHistory, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 3, , 4]);
+                _a.trys.push([0, 4, , 5]);
                 userId = req.userId;
                 return [4 /*yield*/, models_1.InstallmentsModel.find({ userId: userId }).sort({ createdAt: 1 })];
             case 1:
@@ -52,20 +53,24 @@ var getInstallments = function (req, res, next) { return __awaiter(void 0, void 
                 return [4 /*yield*/, models_1.UserModel.findOne({ _id: userId })];
             case 2:
                 user = _a.sent();
+                return [4 /*yield*/, walletHistory_1.WalletHistoryModel.find({ userId: userId }).populate("paymentBy", "uId firstName lastName").sort({ createdAt: 1 })];
+            case 3:
+                walletHistory = _a.sent();
                 res.status(consts_1.OK).json({
                     status: consts_1.OK,
                     message: "Successfully fetched.",
                     data: installments,
                     points: user === null || user === void 0 ? void 0 : user.points,
                     wallet: user === null || user === void 0 ? void 0 : user.wallet,
+                    walletHistory: walletHistory,
                     endpoint: req.originalUrl,
                 });
-                return [3 /*break*/, 4];
-            case 3:
+                return [3 /*break*/, 5];
+            case 4:
                 error_1 = _a.sent();
                 next(error_1);
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
+                return [3 /*break*/, 5];
+            case 5: return [2 /*return*/];
         }
     });
 }); };
