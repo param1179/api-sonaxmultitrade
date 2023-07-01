@@ -18,6 +18,7 @@ router.get("/direct", middlewares_1.auth, controllers_1.UserCtrl.teamsDirect);
 router.get("/teamList/:pId", middlewares_1.auth, controllers_1.UserCtrl.getUserTabs);
 router.post("/add", middlewares_1.auth, (0, middlewares_1.validate)(middlewares_1.createUser), controllers_1.UserCtrl.createUser);
 router.post("/register", middlewares_1.auth, (0, middlewares_1.validate)(middlewares_1.createUser), controllers_1.UserCtrl.createUserDirect);
+router.post("/request", middlewares_1.auth, (0, middlewares_1.validate)(middlewares_1.createPaymentRequest), controllers_1.UserCtrl.createPaymentRequest);
 router.get("/installments", middlewares_1.auth, controllers_1.UserCtrl.getInstallments);
 router.get("/rewards", middlewares_1.auth, controllers_1.UserCtrl.getRewards);
 router.post("/changePassword", middlewares_1.auth, (0, middlewares_1.validate)(middlewares_1.userChangePasswordSchema), controllers_1.UserCtrl.changePAssword);

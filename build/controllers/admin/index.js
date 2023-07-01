@@ -20,3 +20,4 @@ __exportStar(require("./users"), exports);
 __exportStar(require("./installments"), exports);
 __exportStar(require("./rewards"), exports);
 __exportStar(require("./getUserTabs"), exports);
+__exportStar(require("./paymentRequest"), exports);

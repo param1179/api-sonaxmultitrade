@@ -1,6 +1,6 @@
 import express from "express";
 import { UserCtrl } from "../../controllers";
-import { auth, createUser, userChangePasswordSchema, userLoginSchema, validate } from "../../middlewares";
+import { auth, createPaymentRequest, createUser, userChangePasswordSchema, userLoginSchema, validate } from "../../middlewares";
 
 const router = express.Router();
 
@@ -13,6 +13,7 @@ router.get("/direct", auth, UserCtrl.teamsDirect);
 router.get("/teamList/:pId", auth, UserCtrl.getUserTabs);
 router.post("/add", auth, validate(createUser), UserCtrl.createUser);
 router.post("/register", auth, validate(createUser), UserCtrl.createUserDirect);
+router.post("/request", auth, validate(createPaymentRequest), UserCtrl.createPaymentRequest);
 router.get("/installments", auth, UserCtrl.getInstallments);
 router.get("/rewards", auth, UserCtrl.getRewards);
 router.post("/changePassword", auth, validate(userChangePasswordSchema), UserCtrl.changePAssword);

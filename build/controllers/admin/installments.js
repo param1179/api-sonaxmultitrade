@@ -39,6 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.updatePoints = exports.updatePayment = exports.getInstallments = void 0;
 var consts_1 = require("../../consts");
 var models_1 = require("../../database/models");
+var walletHistory_1 = require("../../database/models/walletHistory");
 var errors_1 = require("../../errors");
 var services_1 = require("../../services");
 var getInstallments = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
@@ -74,7 +75,7 @@ var updatePayment = function (req, res, next) { return __awaiter(void 0, void 0,
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 10, , 11]);
+                _a.trys.push([0, 11, , 12]);
                 id = req.params.id;
                 return [4 /*yield*/, models_1.InstallmentsModel.findById(id)];
             case 1:
@@ -95,18 +96,28 @@ var updatePayment = function (req, res, next) { return __awaiter(void 0, void 0,
                     })];
             case 4:
                 directBY = _a.sent();
-                if (!(directBY && (directBY === null || directBY === void 0 ? void 0 : directBY.childs[0].sponserBy))) return [3 /*break*/, 6];
+                if (!(directBY && (directBY === null || directBY === void 0 ? void 0 : directBY.childs[0].sponserBy))) return [3 /*break*/, 7];
                 return [4 /*yield*/, models_1.UserModel.findByIdAndUpdate(directBY === null || directBY === void 0 ? void 0 : directBY.childs[0].sponserBy, {
                         $inc: { wallet: 100 },
                     })];
             case 5:
                 _a.sent();
-                _a.label = 6;
-            case 6: return [4 /*yield*/, models_1.InstallmentsModel.countDocuments({
+                return [4 /*yield*/, walletHistory_1.WalletHistoryModel.create({
+                        userId: directBY === null || directBY === void 0 ? void 0 : directBY.childs[0].sponserBy,
+                        paymentBy: payment === null || payment === void 0 ? void 0 : payment.userId,
+                        levelBy: 0,
+                        payment: 100,
+                        paymentType: "regularEmi",
+                        transactionType: "deposite",
+                    })];
+            case 6:
+                _a.sent();
+                _a.label = 7;
+            case 7: return [4 /*yield*/, models_1.InstallmentsModel.countDocuments({
                     userId: payment === null || payment === void 0 ? void 0 : payment.userId,
                     status: true,
                 })];
-            case 7:
+            case 8:
                 count = _a.sent();
                 numberof = void 0;
                 switch (count) {
@@ -124,22 +135,22 @@ var updatePayment = function (req, res, next) { return __awaiter(void 0, void 0,
                         break;
                 }
                 return [4 /*yield*/, models_1.UserModel.findById(payment.userId)];
-            case 8:
+            case 9:
                 user = _a.sent();
                 return [4 /*yield*/, (0, services_1.sendOtp)("+91".concat(user === null || user === void 0 ? void 0 : user.mobile), "Welcome to Sonax Multitrade. \"".concat(user === null || user === void 0 ? void 0 : user.uId, "\" your ").concat(numberof, " installment of Rs.").concat(payment.price, " has succeeded. You can login on https://sonaxmultitrade.in . Thank you."))];
-            case 9:
+            case 10:
                 _a.sent();
                 res.status(consts_1.OK).json({
                     status: consts_1.OK,
                     message: "Successfully updated.",
                     endpoint: req.originalUrl,
                 });
-                return [3 /*break*/, 11];
-            case 10:
+                return [3 /*break*/, 12];
+            case 11:
                 error_2 = _a.sent();
                 next(error_2);
-                return [3 /*break*/, 11];
-            case 11: return [2 /*return*/];
+                return [3 /*break*/, 12];
+            case 12: return [2 /*return*/];
         }
     });
 }); };

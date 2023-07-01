@@ -21,6 +21,14 @@ const walletHistorySchema = new Schema<IWalletHistory>(
       type: String,
       default: null,
     },
+    paymentType: {
+      type: String,
+      default: null,
+    },
+    transactionType: {
+      type: String,
+      default: null,
+    },
   },
   {
     timestamps: true,

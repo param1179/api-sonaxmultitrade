@@ -27,7 +27,9 @@ router.get("/info/:id", middlewares_1.authAdmin, controllers_1.AdminCtrl.userInf
 router.put("/user/:id", middlewares_1.authAdmin, controllers_1.AdminCtrl.userUpdate);
 router.get("/installments/:id", middlewares_1.authAdmin, controllers_1.AdminCtrl.getInstallments);
 router.get("/payment/:id", middlewares_1.authAdmin, controllers_1.AdminCtrl.updatePayment);
+router.put("/updateRequest/:id", middlewares_1.authAdmin, controllers_1.AdminCtrl.updatePaymentRequest);
 router.get("/userTabs/:pId", middlewares_1.authAdmin, controllers_1.AdminCtrl.getUserTabs);
 router.get("/test", middlewares_1.authAdmin, controllers_1.AdminCtrl.packagesUpdate);
 router.get("/points", middlewares_1.authAdmin, controllers_1.AdminCtrl.updatePoints);
 router.get("/wallet/:id", middlewares_1.authAdmin, controllers_1.AdminCtrl.userWallet);
+router.get("/requests", middlewares_1.authAdmin, controllers_1.AdminCtrl.getPaymentRequest);

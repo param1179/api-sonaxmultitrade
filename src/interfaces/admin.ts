@@ -36,11 +36,19 @@ export interface IRewards extends Request {
   reward: string;
 }
 
+export interface IPaymentRequest extends Request {
+  requestBy?: ID;
+  payment: number;
+  status: string;
+}
+
 export interface IWalletHistory extends Request {
   userId?: ID;
   paymentBy?: ID;
   levelBy: number;
   payment: string | null;
+  paymentType: string | null;
+  transactionType: string | null;
 }
 
 export interface IInstallments extends Request {

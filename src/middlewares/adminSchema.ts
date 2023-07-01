@@ -19,6 +19,12 @@ export const createUser = yup.object({
   }),
 });
 
+export const createPaymentRequest = yup.object({
+  body: yup.object({
+    paymentRequest: yup.number().required(),
+  })
+})
+
 export const createRewards = yup.object({
   body: yup.object({
     rewardLevel: yup.string().required("Reward Level is require field!"),

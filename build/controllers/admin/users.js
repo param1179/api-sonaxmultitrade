@@ -388,7 +388,9 @@ var updateUsers = function (req, res, next) { return __awaiter(void 0, void 0, v
                         userId: firstLevel === null || firstLevel === void 0 ? void 0 : firstLevel.childs[0].sponserBy,
                         paymentBy: firstLevel === null || firstLevel === void 0 ? void 0 : firstLevel.childs[0].sponserBy,
                         levelBy: 1,
-                        payment: 300
+                        payment: 300,
+                        paymentType: "newJoining",
+                        transactionType: "deposite",
                     })];
             case 13:
                 _b.sent();
@@ -408,7 +410,9 @@ var updateUsers = function (req, res, next) { return __awaiter(void 0, void 0, v
                         userId: secondLevel === null || secondLevel === void 0 ? void 0 : secondLevel.childs[0].sponserBy,
                         paymentBy: firstLevel === null || firstLevel === void 0 ? void 0 : firstLevel.childs[0].sponserBy,
                         levelBy: 2,
-                        payment: 100
+                        payment: 100,
+                        paymentType: "newJoining",
+                        transactionType: "deposite",
                     })];
             case 16:
                 _b.sent();
@@ -430,7 +434,9 @@ var updateUsers = function (req, res, next) { return __awaiter(void 0, void 0, v
                         userId: thirdLevel === null || thirdLevel === void 0 ? void 0 : thirdLevel.childs[0].sponserBy,
                         paymentBy: firstLevel === null || firstLevel === void 0 ? void 0 : firstLevel.childs[0].sponserBy,
                         levelBy: 3,
-                        payment: 50
+                        payment: 50,
+                        paymentType: "newJoining",
+                        transactionType: "deposite",
                     })];
             case 19:
                 _b.sent();
@@ -450,7 +456,9 @@ var updateUsers = function (req, res, next) { return __awaiter(void 0, void 0, v
                         userId: fourthLevel === null || fourthLevel === void 0 ? void 0 : fourthLevel.childs[0].sponserBy,
                         paymentBy: firstLevel === null || firstLevel === void 0 ? void 0 : firstLevel.childs[0].sponserBy,
                         levelBy: 4,
-                        payment: 30
+                        payment: 30,
+                        paymentType: "newJoining",
+                        transactionType: "deposite",
                     })];
             case 22:
                 _b.sent();
@@ -470,7 +478,9 @@ var updateUsers = function (req, res, next) { return __awaiter(void 0, void 0, v
                         userId: fivethLevel === null || fivethLevel === void 0 ? void 0 : fivethLevel.childs[0].sponserBy,
                         paymentBy: firstLevel === null || firstLevel === void 0 ? void 0 : firstLevel.childs[0].sponserBy,
                         levelBy: 5,
-                        payment: 10
+                        payment: 10,
+                        paymentType: "newJoining",
+                        transactionType: "deposite",
                     })];
             case 25:
                 _b.sent();
@@ -490,7 +500,9 @@ var updateUsers = function (req, res, next) { return __awaiter(void 0, void 0, v
                         userId: sixthLevel === null || sixthLevel === void 0 ? void 0 : sixthLevel.childs[0].sponserBy,
                         paymentBy: firstLevel === null || firstLevel === void 0 ? void 0 : firstLevel.childs[0].sponserBy,
                         levelBy: 6,
-                        payment: 10
+                        payment: 10,
+                        paymentType: "newJoining",
+                        transactionType: "deposite",
                     })];
             case 28:
                 _b.sent();
@@ -638,7 +650,9 @@ var userWallet = function (req, res, next) { return __awaiter(void 0, void 0, vo
                 user = _a.sent();
                 if (!user)
                     return [2 /*return*/, next(errors_1.ApiError.BadRequest("User not found!"))];
-                return [4 /*yield*/, walletHistory_1.WalletHistoryModel.find({ userId: id }).populate("paymentBy", "uId firstName lastName").sort({ createdAt: -1 })];
+                return [4 /*yield*/, walletHistory_1.WalletHistoryModel.find({ userId: id })
+                        .populate("paymentBy", "uId firstName lastName")
+                        .sort({ createdAt: -1 })];
             case 2:
                 walletHistory = _a.sent();
                 res.status(consts_1.OK).json({

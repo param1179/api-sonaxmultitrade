@@ -5,6 +5,7 @@ import {
   UserModel,
   UserSponserByModel,
 } from "../../database/models";
+import { WalletHistoryModel } from "../../database/models/walletHistory";
 import { ApiError } from "../../errors";
 import { IAuthAdmin } from "../../interfaces";
 import { sendOtp } from "../../services";
@@ -61,6 +62,14 @@ export const updatePayment = async (
     if (directBY && directBY?.childs[0].sponserBy) {
       await UserModel.findByIdAndUpdate(directBY?.childs[0].sponserBy, {
         $inc: { wallet: 100 },
+      });
+      await WalletHistoryModel.create({
+        userId: directBY?.childs[0].sponserBy,
+        paymentBy: payment?.userId,
+        levelBy: 0,
+        payment: 100,
+        paymentType: "regularEmi",
+        transactionType: "deposite",
       });
     }
     const count = await InstallmentsModel.countDocuments({

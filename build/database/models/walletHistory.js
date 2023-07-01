@@ -20,6 +20,14 @@ var walletHistorySchema = new mongoose_1.Schema({
         type: String,
         default: null,
     },
+    paymentType: {
+        type: String,
+        default: null,
+    },
+    transactionType: {
+        type: String,
+        default: null,
+    },
 }, {
     timestamps: true,
 });

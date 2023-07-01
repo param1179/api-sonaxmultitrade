@@ -51,7 +51,7 @@ export const getUsers = async (
       .select("_id firstName lastName uId isCompleted createdAt updatedAt")
       .skip((page - 1) * limit)
       .limit(limit)
-      .sort({createdAt: 1});
+      .sort({ createdAt: 1 });
     const totalUsers = await UserModel.find({
       uId: { $regex: search, $options: "i" },
     }).countDocuments();
@@ -302,8 +302,10 @@ export const updateUsers = async (
         userId: firstLevel?.childs[0].sponserBy,
         paymentBy: firstLevel?.childs[0].sponserBy,
         levelBy: 1,
-        payment: 300
-      })
+        payment: 300,
+        paymentType: "newJoining",
+        transactionType: "deposite",
+      });
 
       const secondLevel = await UserSponserByModel.findOne(
         { "childs.childId": firstLevel?.childs[0].sponserBy },
@@ -322,8 +324,10 @@ export const updateUsers = async (
           userId: secondLevel?.childs[0].sponserBy,
           paymentBy: firstLevel?.childs[0].sponserBy,
           levelBy: 2,
-          payment: 100
-        })
+          payment: 100,
+          paymentType: "newJoining",
+          transactionType: "deposite",
+        });
 
         const thirdLevel = await UserSponserByModel.findOne(
           { "childs.childId": secondLevel?.childs[0].sponserBy },
@@ -344,8 +348,10 @@ export const updateUsers = async (
             userId: thirdLevel?.childs[0].sponserBy,
             paymentBy: firstLevel?.childs[0].sponserBy,
             levelBy: 3,
-            payment: 50
-          })
+            payment: 50,
+            paymentType: "newJoining",
+            transactionType: "deposite",
+          });
 
           const fourthLevel = await UserSponserByModel.findOne(
             { "childs.childId": thirdLevel?.childs[0].sponserBy },
@@ -367,8 +373,10 @@ export const updateUsers = async (
               userId: fourthLevel?.childs[0].sponserBy,
               paymentBy: firstLevel?.childs[0].sponserBy,
               levelBy: 4,
-              payment: 30
-            })
+              payment: 30,
+              paymentType: "newJoining",
+              transactionType: "deposite",
+            });
 
             const fivethLevel = await UserSponserByModel.findOne(
               { "childs.childId": thirdLevel?.childs[0].sponserBy },
@@ -390,8 +398,10 @@ export const updateUsers = async (
                 userId: fivethLevel?.childs[0].sponserBy,
                 paymentBy: firstLevel?.childs[0].sponserBy,
                 levelBy: 5,
-                payment: 10
-              })
+                payment: 10,
+                paymentType: "newJoining",
+                transactionType: "deposite",
+              });
 
               const sixthLevel = await UserSponserByModel.findOne(
                 { "childs.childId": fivethLevel?.childs[0].sponserBy },
@@ -413,8 +423,10 @@ export const updateUsers = async (
                   userId: sixthLevel?.childs[0].sponserBy,
                   paymentBy: firstLevel?.childs[0].sponserBy,
                   levelBy: 6,
-                  payment: 10
-                })
+                  payment: 10,
+                  paymentType: "newJoining",
+                  transactionType: "deposite",
+                });
               }
             }
           }
@@ -533,7 +545,6 @@ export const changePAsswordByAdmin = async (
   }
 };
 
-
 export const userWallet = async (
   req: IAuthAdmin,
   res: Response,
@@ -544,7 +555,9 @@ export const userWallet = async (
     const user = await UserModel.findById(id).select("wallet points");
     if (!user) return next(ApiError.BadRequest("User not found!"));
 
-    const walletHistory = await WalletHistoryModel.find({userId: id}).populate("paymentBy", "uId firstName lastName").sort({createdAt: -1})
+    const walletHistory = await WalletHistoryModel.find({ userId: id })
+      .populate("paymentBy", "uId firstName lastName")
+      .sort({ createdAt: -1 });
     res.status(OK).json({
       status: OK,
       message: `Updated successfully.`,
