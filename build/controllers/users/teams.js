@@ -86,7 +86,7 @@ var teamsDirect = function (req, res, next) { return __awaiter(void 0, void 0, v
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 userId = req.userId;
-                return [4 /*yield*/, models_1.UserSponserByModel.countDocuments({ "childs.sponserBy": userId }, { _id: 0, childs: { $elemMatch: { sponserBy: userId } } })];
+                return [4 /*yield*/, models_1.UserSponserByModel.find({ "childs.sponserBy": userId }, { _id: 0, childs: { $elemMatch: { sponserBy: userId } } }).populate("childs.childId", "uId firstName LastName createdAt isCompleted")];
             case 1:
                 direct = _a.sent();
                 res.status(consts_1.OK).json({

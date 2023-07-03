@@ -31,10 +31,10 @@ export const teams = async (req: IAuth, res: Response, next: NextFunction) => {
 export const teamsDirect = async (req: IAuth, res: Response, next: NextFunction) => {
   try {
     const userId = req.userId;
-    const direct = await UserSponserByModel.countDocuments(
+    const direct = await UserSponserByModel.find(
       { "childs.sponserBy": userId },
       { _id: 0, childs: { $elemMatch: { sponserBy: userId } } }
-    )
+    ).populate("childs.childId", "uId firstName LastName createdAt isCompleted")
 
     res.status(OK).json({
       status: OK,
