@@ -262,7 +262,7 @@ export const updateUsers = async (
 ) => {
   try {
     const { id } = req.params;
-    const user = await UserModel.findById(id);
+    const user: any = await UserModel.findById(id);
 
     if (!user) return next(ApiError.BadRequest("user not exist!"));
     if (!user.packageId) {
@@ -288,152 +288,153 @@ export const updateUsers = async (
     user.isCompleted = !user.isCompleted;
     await user.save();
 
-    const firstLevel = await UserSponserByModel.findOne(
-      { "childs.childId": user._id },
-      { _id: 0, childs: { $elemMatch: { childId: user._id } } }
-    );
-
-    if (firstLevel && firstLevel?.childs[0].sponserBy) {
-      await UserModel.findByIdAndUpdate(firstLevel?.childs[0].sponserBy, {
-        $inc: { wallet: 300 },
-      });
-
-      await WalletHistoryModel.create({
-        userId: firstLevel?.childs[0].sponserBy,
-        paymentBy: firstLevel?.childs[0].sponserBy,
-        levelBy: 1,
-        payment: 300,
-        paymentType: "newJoining",
-        transactionType: "deposite",
-      });
-
-      const secondLevel = await UserSponserByModel.findOne(
-        { "childs.childId": firstLevel?.childs[0].sponserBy },
-        {
-          _id: 0,
-          childs: { $elemMatch: { childId: firstLevel?.childs[0].sponserBy } },
-        }
-      );
-
-      if (secondLevel && secondLevel?.childs[0].sponserBy) {
-        await UserModel.findByIdAndUpdate(secondLevel?.childs[0].sponserBy, {
-          $inc: { wallet: 100 },
+    const firstLevel = await getSponser(id);
+    setTimeout(async () => {
+      if (firstLevel && firstLevel.sponserBy._id) {
+        await UserModel.findByIdAndUpdate(firstLevel.sponserBy._id, {
+          $inc: { wallet: 300 },
         });
 
-        await WalletHistoryModel.create({
-          userId: secondLevel?.childs[0].sponserBy,
-          paymentBy: firstLevel?.childs[0].sponserBy,
-          levelBy: 2,
-          payment: 100,
+        const h1 = await WalletHistoryModel.create({
+          userId: firstLevel.sponserBy._id,
+          paymentBy: firstLevel.sponserBy._id,
+          levelBy: 1,
+          payment: 300,
           paymentType: "newJoining",
           transactionType: "deposite",
         });
 
-        const thirdLevel = await UserSponserByModel.findOne(
-          { "childs.childId": secondLevel?.childs[0].sponserBy },
-          {
-            _id: 0,
-            childs: {
-              $elemMatch: { childId: secondLevel?.childs[0].sponserBy },
-            },
-          }
-        );
+        if (h1) {
+          const secondLevel = await getSponser(firstLevel.sponserBy._id);
+          setTimeout(async () => {
+            if (secondLevel && secondLevel.sponserBy._id) {
+              await UserModel.findByIdAndUpdate(secondLevel.sponserBy._id, {
+                $inc: { wallet: 100 },
+              });
 
-        if (thirdLevel && thirdLevel?.childs[0].sponserBy) {
-          await UserModel.findByIdAndUpdate(thirdLevel?.childs[0].sponserBy, {
-            $inc: { wallet: 50 },
-          });
-
-          await WalletHistoryModel.create({
-            userId: thirdLevel?.childs[0].sponserBy,
-            paymentBy: firstLevel?.childs[0].sponserBy,
-            levelBy: 3,
-            payment: 50,
-            paymentType: "newJoining",
-            transactionType: "deposite",
-          });
-
-          const fourthLevel = await UserSponserByModel.findOne(
-            { "childs.childId": thirdLevel?.childs[0].sponserBy },
-            {
-              _id: 0,
-              childs: {
-                $elemMatch: { childId: thirdLevel?.childs[0].sponserBy },
-              },
-            }
-          );
-
-          if (fourthLevel && fourthLevel?.childs[0].sponserBy) {
-            await UserModel.findByIdAndUpdate(
-              fourthLevel?.childs[0].sponserBy,
-              { $inc: { wallet: 30 } }
-            );
-
-            await WalletHistoryModel.create({
-              userId: fourthLevel?.childs[0].sponserBy,
-              paymentBy: firstLevel?.childs[0].sponserBy,
-              levelBy: 4,
-              payment: 30,
-              paymentType: "newJoining",
-              transactionType: "deposite",
-            });
-
-            const fivethLevel = await UserSponserByModel.findOne(
-              { "childs.childId": thirdLevel?.childs[0].sponserBy },
-              {
-                _id: 0,
-                childs: {
-                  $elemMatch: { childId: thirdLevel?.childs[0].sponserBy },
-                },
-              }
-            );
-
-            if (fivethLevel && fivethLevel?.childs[0].sponserBy) {
-              await UserModel.findByIdAndUpdate(
-                fivethLevel?.childs[0].sponserBy,
-                { $inc: { wallet: 10 } }
-              );
-
-              await WalletHistoryModel.create({
-                userId: fivethLevel?.childs[0].sponserBy,
-                paymentBy: firstLevel?.childs[0].sponserBy,
-                levelBy: 5,
-                payment: 10,
+              const h2 = await WalletHistoryModel.create({
+                userId: secondLevel.sponserBy._id,
+                paymentBy: firstLevel.sponserBy._id,
+                levelBy: 2,
+                payment: 100,
                 paymentType: "newJoining",
                 transactionType: "deposite",
               });
 
-              const sixthLevel = await UserSponserByModel.findOne(
-                { "childs.childId": fivethLevel?.childs[0].sponserBy },
-                {
-                  _id: 0,
-                  childs: {
-                    $elemMatch: { childId: fivethLevel?.childs[0].sponserBy },
-                  },
-                }
-              );
+              if (h2) {
+                const thirdLevel = await getSponser(secondLevel.sponserBy._id);
+                setTimeout(async () => {
+                  if (thirdLevel && thirdLevel.sponserBy._id) {
+                    await UserModel.findByIdAndUpdate(
+                      thirdLevel.sponserBy._id,
+                      {
+                        $inc: { wallet: 50 },
+                      }
+                    );
 
-              if (sixthLevel && sixthLevel?.childs[0].sponserBy) {
-                await UserModel.findByIdAndUpdate(
-                  sixthLevel?.childs[0].sponserBy,
-                  { $inc: { wallet: 10 } }
-                );
+                    const h3 = await WalletHistoryModel.create({
+                      userId: thirdLevel.sponserBy._id,
+                      paymentBy: firstLevel.sponserBy._id,
+                      levelBy: 3,
+                      payment: 50,
+                      paymentType: "newJoining",
+                      transactionType: "deposite",
+                    });
 
-                await WalletHistoryModel.create({
-                  userId: sixthLevel?.childs[0].sponserBy,
-                  paymentBy: firstLevel?.childs[0].sponserBy,
-                  levelBy: 6,
-                  payment: 10,
-                  paymentType: "newJoining",
-                  transactionType: "deposite",
-                });
+                    if (h3) {
+                      const fourthLevel = await getSponser(
+                        thirdLevel.sponserBy._id
+                      );
+                      setTimeout(async () => {
+                        if (fourthLevel && fourthLevel.sponserBy._id) {
+                          await UserModel.findByIdAndUpdate(
+                            fourthLevel.sponserBy._id,
+                            {
+                              $inc: { wallet: 30 },
+                            }
+                          );
+
+                          const h4 = await WalletHistoryModel.create({
+                            userId: fourthLevel.sponserBy._id,
+                            paymentBy: firstLevel.sponserBy._id,
+                            levelBy: 4,
+                            payment: 30,
+                            paymentType: "newJoining",
+                            transactionType: "deposite",
+                          });
+
+                          if (h4) {
+                            const fivethLevel = await getSponser(
+                              fourthLevel.sponserBy._id
+                            );
+                            setTimeout(async () => {
+                              if (fivethLevel && fivethLevel.sponserBy._id) {
+                                await UserModel.findByIdAndUpdate(
+                                  fivethLevel.sponserBy._id,
+                                  {
+                                    $inc: { wallet: 10 },
+                                  }
+                                );
+
+                                const h5 = await WalletHistoryModel.create({
+                                  userId: fivethLevel.sponserBy._id,
+                                  paymentBy: firstLevel.sponserBy._id,
+                                  levelBy: 5,
+                                  payment: 10,
+                                  paymentType: "newJoining",
+                                  transactionType: "deposite",
+                                });
+
+                                if (h5) {
+                                  const sixthLevel = await getSponser(
+                                    fivethLevel.sponserBy._id
+                                  );
+                                  setTimeout(async () => {
+                                    if (
+                                      sixthLevel &&
+                                      sixthLevel.sponserBy._id
+                                    ) {
+                                      await UserModel.findByIdAndUpdate(
+                                        sixthLevel.sponserBy._id,
+                                        {
+                                          $inc: { wallet: 10 },
+                                        }
+                                      );
+
+                                      const h5 =
+                                        await WalletHistoryModel.create({
+                                          userId: sixthLevel.sponserBy._id,
+                                          paymentBy: firstLevel.sponserBy._id,
+                                          levelBy: 6,
+                                          payment: 10,
+                                          paymentType: "newJoining",
+                                          transactionType: "deposite",
+                                        });
+
+                                      if (h5) {
+                                        res.status(OK).json({
+                                          status: OK,
+                                          message: `Successfully updated.`,
+                                          endpoint: req.originalUrl,
+                                        });
+                                      }
+                                    }
+                                  }, 100);
+                                }
+                              }
+                            }, 100);
+                          }
+                        }
+                      }, 100);
+                    }
+                  }
+                }, 100);
               }
             }
-          }
+          }, 100);
         }
       }
-    }
-
+    }, 100);
     res.status(OK).json({
       status: OK,
       message: `Successfully updated.`,
@@ -568,4 +569,18 @@ export const userWallet = async (
   } catch (error) {
     next(error);
   }
+};
+
+const getSponser = async (userId: any) => {
+  const sponser = await UserSponserByModel.findOne(
+    {
+      childs: {
+        $elemMatch: { childId: userId },
+      },
+    },
+    { "childs.sponserBy.$": 1 }
+  ).populate("childs.sponserBy", "firstName lastName");
+
+  const sponserBY = sponser?.childs[0];
+  return sponserBY;
 };

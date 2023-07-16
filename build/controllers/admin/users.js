@@ -329,11 +329,11 @@ function getLastChild(parentId, placement, sId, uId) {
     });
 }
 var updateUsers = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, user, pack, _a, months, price, index, firstLevel, secondLevel, thirdLevel, fourthLevel, fivethLevel, sixthLevel, error_5;
+    var id, user, pack, _a, months, price, index, firstLevel_1, error_5;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                _b.trys.push([0, 30, , 31]);
+                _b.trys.push([0, 12, , 13]);
                 id = req.params.id;
                 return [4 /*yield*/, models_1.UserModel.findById(id)];
             case 1:
@@ -375,150 +375,204 @@ var updateUsers = function (req, res, next) { return __awaiter(void 0, void 0, v
                 return [4 /*yield*/, user.save()];
             case 10:
                 _b.sent();
-                return [4 /*yield*/, models_1.UserSponserByModel.findOne({ "childs.childId": user._id }, { _id: 0, childs: { $elemMatch: { childId: user._id } } })];
+                return [4 /*yield*/, getSponser(id)];
             case 11:
-                firstLevel = _b.sent();
-                if (!(firstLevel && (firstLevel === null || firstLevel === void 0 ? void 0 : firstLevel.childs[0].sponserBy))) return [3 /*break*/, 29];
-                return [4 /*yield*/, models_1.UserModel.findByIdAndUpdate(firstLevel === null || firstLevel === void 0 ? void 0 : firstLevel.childs[0].sponserBy, {
-                        $inc: { wallet: 300 },
-                    })];
-            case 12:
-                _b.sent();
-                return [4 /*yield*/, walletHistory_1.WalletHistoryModel.create({
-                        userId: firstLevel === null || firstLevel === void 0 ? void 0 : firstLevel.childs[0].sponserBy,
-                        paymentBy: firstLevel === null || firstLevel === void 0 ? void 0 : firstLevel.childs[0].sponserBy,
-                        levelBy: 1,
-                        payment: 300,
-                        paymentType: "newJoining",
-                        transactionType: "deposite",
-                    })];
-            case 13:
-                _b.sent();
-                return [4 /*yield*/, models_1.UserSponserByModel.findOne({ "childs.childId": firstLevel === null || firstLevel === void 0 ? void 0 : firstLevel.childs[0].sponserBy }, {
-                        _id: 0,
-                        childs: { $elemMatch: { childId: firstLevel === null || firstLevel === void 0 ? void 0 : firstLevel.childs[0].sponserBy } },
-                    })];
-            case 14:
-                secondLevel = _b.sent();
-                if (!(secondLevel && (secondLevel === null || secondLevel === void 0 ? void 0 : secondLevel.childs[0].sponserBy))) return [3 /*break*/, 29];
-                return [4 /*yield*/, models_1.UserModel.findByIdAndUpdate(secondLevel === null || secondLevel === void 0 ? void 0 : secondLevel.childs[0].sponserBy, {
-                        $inc: { wallet: 100 },
-                    })];
-            case 15:
-                _b.sent();
-                return [4 /*yield*/, walletHistory_1.WalletHistoryModel.create({
-                        userId: secondLevel === null || secondLevel === void 0 ? void 0 : secondLevel.childs[0].sponserBy,
-                        paymentBy: firstLevel === null || firstLevel === void 0 ? void 0 : firstLevel.childs[0].sponserBy,
-                        levelBy: 2,
-                        payment: 100,
-                        paymentType: "newJoining",
-                        transactionType: "deposite",
-                    })];
-            case 16:
-                _b.sent();
-                return [4 /*yield*/, models_1.UserSponserByModel.findOne({ "childs.childId": secondLevel === null || secondLevel === void 0 ? void 0 : secondLevel.childs[0].sponserBy }, {
-                        _id: 0,
-                        childs: {
-                            $elemMatch: { childId: secondLevel === null || secondLevel === void 0 ? void 0 : secondLevel.childs[0].sponserBy },
-                        },
-                    })];
-            case 17:
-                thirdLevel = _b.sent();
-                if (!(thirdLevel && (thirdLevel === null || thirdLevel === void 0 ? void 0 : thirdLevel.childs[0].sponserBy))) return [3 /*break*/, 29];
-                return [4 /*yield*/, models_1.UserModel.findByIdAndUpdate(thirdLevel === null || thirdLevel === void 0 ? void 0 : thirdLevel.childs[0].sponserBy, {
-                        $inc: { wallet: 50 },
-                    })];
-            case 18:
-                _b.sent();
-                return [4 /*yield*/, walletHistory_1.WalletHistoryModel.create({
-                        userId: thirdLevel === null || thirdLevel === void 0 ? void 0 : thirdLevel.childs[0].sponserBy,
-                        paymentBy: firstLevel === null || firstLevel === void 0 ? void 0 : firstLevel.childs[0].sponserBy,
-                        levelBy: 3,
-                        payment: 50,
-                        paymentType: "newJoining",
-                        transactionType: "deposite",
-                    })];
-            case 19:
-                _b.sent();
-                return [4 /*yield*/, models_1.UserSponserByModel.findOne({ "childs.childId": thirdLevel === null || thirdLevel === void 0 ? void 0 : thirdLevel.childs[0].sponserBy }, {
-                        _id: 0,
-                        childs: {
-                            $elemMatch: { childId: thirdLevel === null || thirdLevel === void 0 ? void 0 : thirdLevel.childs[0].sponserBy },
-                        },
-                    })];
-            case 20:
-                fourthLevel = _b.sent();
-                if (!(fourthLevel && (fourthLevel === null || fourthLevel === void 0 ? void 0 : fourthLevel.childs[0].sponserBy))) return [3 /*break*/, 29];
-                return [4 /*yield*/, models_1.UserModel.findByIdAndUpdate(fourthLevel === null || fourthLevel === void 0 ? void 0 : fourthLevel.childs[0].sponserBy, { $inc: { wallet: 30 } })];
-            case 21:
-                _b.sent();
-                return [4 /*yield*/, walletHistory_1.WalletHistoryModel.create({
-                        userId: fourthLevel === null || fourthLevel === void 0 ? void 0 : fourthLevel.childs[0].sponserBy,
-                        paymentBy: firstLevel === null || firstLevel === void 0 ? void 0 : firstLevel.childs[0].sponserBy,
-                        levelBy: 4,
-                        payment: 30,
-                        paymentType: "newJoining",
-                        transactionType: "deposite",
-                    })];
-            case 22:
-                _b.sent();
-                return [4 /*yield*/, models_1.UserSponserByModel.findOne({ "childs.childId": thirdLevel === null || thirdLevel === void 0 ? void 0 : thirdLevel.childs[0].sponserBy }, {
-                        _id: 0,
-                        childs: {
-                            $elemMatch: { childId: thirdLevel === null || thirdLevel === void 0 ? void 0 : thirdLevel.childs[0].sponserBy },
-                        },
-                    })];
-            case 23:
-                fivethLevel = _b.sent();
-                if (!(fivethLevel && (fivethLevel === null || fivethLevel === void 0 ? void 0 : fivethLevel.childs[0].sponserBy))) return [3 /*break*/, 29];
-                return [4 /*yield*/, models_1.UserModel.findByIdAndUpdate(fivethLevel === null || fivethLevel === void 0 ? void 0 : fivethLevel.childs[0].sponserBy, { $inc: { wallet: 10 } })];
-            case 24:
-                _b.sent();
-                return [4 /*yield*/, walletHistory_1.WalletHistoryModel.create({
-                        userId: fivethLevel === null || fivethLevel === void 0 ? void 0 : fivethLevel.childs[0].sponserBy,
-                        paymentBy: firstLevel === null || firstLevel === void 0 ? void 0 : firstLevel.childs[0].sponserBy,
-                        levelBy: 5,
-                        payment: 10,
-                        paymentType: "newJoining",
-                        transactionType: "deposite",
-                    })];
-            case 25:
-                _b.sent();
-                return [4 /*yield*/, models_1.UserSponserByModel.findOne({ "childs.childId": fivethLevel === null || fivethLevel === void 0 ? void 0 : fivethLevel.childs[0].sponserBy }, {
-                        _id: 0,
-                        childs: {
-                            $elemMatch: { childId: fivethLevel === null || fivethLevel === void 0 ? void 0 : fivethLevel.childs[0].sponserBy },
-                        },
-                    })];
-            case 26:
-                sixthLevel = _b.sent();
-                if (!(sixthLevel && (sixthLevel === null || sixthLevel === void 0 ? void 0 : sixthLevel.childs[0].sponserBy))) return [3 /*break*/, 29];
-                return [4 /*yield*/, models_1.UserModel.findByIdAndUpdate(sixthLevel === null || sixthLevel === void 0 ? void 0 : sixthLevel.childs[0].sponserBy, { $inc: { wallet: 10 } })];
-            case 27:
-                _b.sent();
-                return [4 /*yield*/, walletHistory_1.WalletHistoryModel.create({
-                        userId: sixthLevel === null || sixthLevel === void 0 ? void 0 : sixthLevel.childs[0].sponserBy,
-                        paymentBy: firstLevel === null || firstLevel === void 0 ? void 0 : firstLevel.childs[0].sponserBy,
-                        levelBy: 6,
-                        payment: 10,
-                        paymentType: "newJoining",
-                        transactionType: "deposite",
-                    })];
-            case 28:
-                _b.sent();
-                _b.label = 29;
-            case 29:
+                firstLevel_1 = _b.sent();
+                setTimeout(function () { return __awaiter(void 0, void 0, void 0, function () {
+                    var h1, secondLevel_1;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0:
+                                if (!(firstLevel_1 && firstLevel_1.sponserBy._id)) return [3 /*break*/, 4];
+                                return [4 /*yield*/, models_1.UserModel.findByIdAndUpdate(firstLevel_1.sponserBy._id, {
+                                        $inc: { wallet: 300 },
+                                    })];
+                            case 1:
+                                _a.sent();
+                                return [4 /*yield*/, walletHistory_1.WalletHistoryModel.create({
+                                        userId: firstLevel_1.sponserBy._id,
+                                        paymentBy: firstLevel_1.sponserBy._id,
+                                        levelBy: 1,
+                                        payment: 300,
+                                        paymentType: "newJoining",
+                                        transactionType: "deposite",
+                                    })];
+                            case 2:
+                                h1 = _a.sent();
+                                if (!h1) return [3 /*break*/, 4];
+                                return [4 /*yield*/, getSponser(firstLevel_1.sponserBy._id)];
+                            case 3:
+                                secondLevel_1 = _a.sent();
+                                setTimeout(function () { return __awaiter(void 0, void 0, void 0, function () {
+                                    var h2, thirdLevel_1;
+                                    return __generator(this, function (_a) {
+                                        switch (_a.label) {
+                                            case 0:
+                                                if (!(secondLevel_1 && secondLevel_1.sponserBy._id)) return [3 /*break*/, 4];
+                                                return [4 /*yield*/, models_1.UserModel.findByIdAndUpdate(secondLevel_1.sponserBy._id, {
+                                                        $inc: { wallet: 100 },
+                                                    })];
+                                            case 1:
+                                                _a.sent();
+                                                return [4 /*yield*/, walletHistory_1.WalletHistoryModel.create({
+                                                        userId: secondLevel_1.sponserBy._id,
+                                                        paymentBy: firstLevel_1.sponserBy._id,
+                                                        levelBy: 2,
+                                                        payment: 100,
+                                                        paymentType: "newJoining",
+                                                        transactionType: "deposite",
+                                                    })];
+                                            case 2:
+                                                h2 = _a.sent();
+                                                if (!h2) return [3 /*break*/, 4];
+                                                return [4 /*yield*/, getSponser(secondLevel_1.sponserBy._id)];
+                                            case 3:
+                                                thirdLevel_1 = _a.sent();
+                                                setTimeout(function () { return __awaiter(void 0, void 0, void 0, function () {
+                                                    var h3, fourthLevel_1;
+                                                    return __generator(this, function (_a) {
+                                                        switch (_a.label) {
+                                                            case 0:
+                                                                if (!(thirdLevel_1 && thirdLevel_1.sponserBy._id)) return [3 /*break*/, 4];
+                                                                return [4 /*yield*/, models_1.UserModel.findByIdAndUpdate(thirdLevel_1.sponserBy._id, {
+                                                                        $inc: { wallet: 50 },
+                                                                    })];
+                                                            case 1:
+                                                                _a.sent();
+                                                                return [4 /*yield*/, walletHistory_1.WalletHistoryModel.create({
+                                                                        userId: thirdLevel_1.sponserBy._id,
+                                                                        paymentBy: firstLevel_1.sponserBy._id,
+                                                                        levelBy: 3,
+                                                                        payment: 50,
+                                                                        paymentType: "newJoining",
+                                                                        transactionType: "deposite",
+                                                                    })];
+                                                            case 2:
+                                                                h3 = _a.sent();
+                                                                if (!h3) return [3 /*break*/, 4];
+                                                                return [4 /*yield*/, getSponser(thirdLevel_1.sponserBy._id)];
+                                                            case 3:
+                                                                fourthLevel_1 = _a.sent();
+                                                                setTimeout(function () { return __awaiter(void 0, void 0, void 0, function () {
+                                                                    var h4, fivethLevel_1;
+                                                                    return __generator(this, function (_a) {
+                                                                        switch (_a.label) {
+                                                                            case 0:
+                                                                                if (!(fourthLevel_1 && fourthLevel_1.sponserBy._id)) return [3 /*break*/, 4];
+                                                                                return [4 /*yield*/, models_1.UserModel.findByIdAndUpdate(fourthLevel_1.sponserBy._id, {
+                                                                                        $inc: { wallet: 30 },
+                                                                                    })];
+                                                                            case 1:
+                                                                                _a.sent();
+                                                                                return [4 /*yield*/, walletHistory_1.WalletHistoryModel.create({
+                                                                                        userId: fourthLevel_1.sponserBy._id,
+                                                                                        paymentBy: firstLevel_1.sponserBy._id,
+                                                                                        levelBy: 4,
+                                                                                        payment: 30,
+                                                                                        paymentType: "newJoining",
+                                                                                        transactionType: "deposite",
+                                                                                    })];
+                                                                            case 2:
+                                                                                h4 = _a.sent();
+                                                                                if (!h4) return [3 /*break*/, 4];
+                                                                                return [4 /*yield*/, getSponser(fourthLevel_1.sponserBy._id)];
+                                                                            case 3:
+                                                                                fivethLevel_1 = _a.sent();
+                                                                                setTimeout(function () { return __awaiter(void 0, void 0, void 0, function () {
+                                                                                    var h5, sixthLevel_1;
+                                                                                    return __generator(this, function (_a) {
+                                                                                        switch (_a.label) {
+                                                                                            case 0:
+                                                                                                if (!(fivethLevel_1 && fivethLevel_1.sponserBy._id)) return [3 /*break*/, 4];
+                                                                                                return [4 /*yield*/, models_1.UserModel.findByIdAndUpdate(fivethLevel_1.sponserBy._id, {
+                                                                                                        $inc: { wallet: 10 },
+                                                                                                    })];
+                                                                                            case 1:
+                                                                                                _a.sent();
+                                                                                                return [4 /*yield*/, walletHistory_1.WalletHistoryModel.create({
+                                                                                                        userId: fivethLevel_1.sponserBy._id,
+                                                                                                        paymentBy: firstLevel_1.sponserBy._id,
+                                                                                                        levelBy: 5,
+                                                                                                        payment: 10,
+                                                                                                        paymentType: "newJoining",
+                                                                                                        transactionType: "deposite",
+                                                                                                    })];
+                                                                                            case 2:
+                                                                                                h5 = _a.sent();
+                                                                                                if (!h5) return [3 /*break*/, 4];
+                                                                                                return [4 /*yield*/, getSponser(fivethLevel_1.sponserBy._id)];
+                                                                                            case 3:
+                                                                                                sixthLevel_1 = _a.sent();
+                                                                                                setTimeout(function () { return __awaiter(void 0, void 0, void 0, function () {
+                                                                                                    var h5_1;
+                                                                                                    return __generator(this, function (_a) {
+                                                                                                        switch (_a.label) {
+                                                                                                            case 0:
+                                                                                                                if (!(sixthLevel_1 &&
+                                                                                                                    sixthLevel_1.sponserBy._id)) return [3 /*break*/, 3];
+                                                                                                                return [4 /*yield*/, models_1.UserModel.findByIdAndUpdate(sixthLevel_1.sponserBy._id, {
+                                                                                                                        $inc: { wallet: 10 },
+                                                                                                                    })];
+                                                                                                            case 1:
+                                                                                                                _a.sent();
+                                                                                                                return [4 /*yield*/, walletHistory_1.WalletHistoryModel.create({
+                                                                                                                        userId: sixthLevel_1.sponserBy._id,
+                                                                                                                        paymentBy: firstLevel_1.sponserBy._id,
+                                                                                                                        levelBy: 6,
+                                                                                                                        payment: 10,
+                                                                                                                        paymentType: "newJoining",
+                                                                                                                        transactionType: "deposite",
+                                                                                                                    })];
+                                                                                                            case 2:
+                                                                                                                h5_1 = _a.sent();
+                                                                                                                if (h5_1) {
+                                                                                                                    res.status(consts_1.OK).json({
+                                                                                                                        status: consts_1.OK,
+                                                                                                                        message: "Successfully updated.",
+                                                                                                                        endpoint: req.originalUrl,
+                                                                                                                    });
+                                                                                                                }
+                                                                                                                _a.label = 3;
+                                                                                                            case 3: return [2 /*return*/];
+                                                                                                        }
+                                                                                                    });
+                                                                                                }); }, 100);
+                                                                                                _a.label = 4;
+                                                                                            case 4: return [2 /*return*/];
+                                                                                        }
+                                                                                    });
+                                                                                }); }, 100);
+                                                                                _a.label = 4;
+                                                                            case 4: return [2 /*return*/];
+                                                                        }
+                                                                    });
+                                                                }); }, 100);
+                                                                _a.label = 4;
+                                                            case 4: return [2 /*return*/];
+                                                        }
+                                                    });
+                                                }); }, 100);
+                                                _a.label = 4;
+                                            case 4: return [2 /*return*/];
+                                        }
+                                    });
+                                }); }, 100);
+                                _a.label = 4;
+                            case 4: return [2 /*return*/];
+                        }
+                    });
+                }); }, 100);
                 res.status(consts_1.OK).json({
                     status: consts_1.OK,
                     message: "Successfully updated.",
                     endpoint: req.originalUrl,
                 });
-                return [3 /*break*/, 31];
-            case 30:
+                return [3 /*break*/, 13];
+            case 12:
                 error_5 = _b.sent();
                 next(error_5);
-                return [3 /*break*/, 31];
-            case 31: return [2 /*return*/];
+                return [3 /*break*/, 13];
+            case 13: return [2 /*return*/];
         }
     });
 }); };
@@ -672,3 +726,19 @@ var userWallet = function (req, res, next) { return __awaiter(void 0, void 0, vo
     });
 }); };
 exports.userWallet = userWallet;
+var getSponser = function (userId) { return __awaiter(void 0, void 0, void 0, function () {
+    var sponser, sponserBY;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, models_1.UserSponserByModel.findOne({
+                    childs: {
+                        $elemMatch: { childId: userId },
+                    },
+                }, { "childs.sponserBy.$": 1 }).populate("childs.sponserBy", "firstName lastName")];
+            case 1:
+                sponser = _a.sent();
+                sponserBY = sponser === null || sponser === void 0 ? void 0 : sponser.childs[0];
+                return [2 /*return*/, sponserBY];
+        }
+    });
+}); };
