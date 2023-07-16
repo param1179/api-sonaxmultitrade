@@ -62,6 +62,7 @@ var getInstallments = function (req, res, next) { return __awaiter(void 0, void 
                     data: installments,
                     points: user === null || user === void 0 ? void 0 : user.points,
                     wallet: user === null || user === void 0 ? void 0 : user.wallet,
+                    withdraw: user === null || user === void 0 ? void 0 : user.withdraw,
                     walletHistory: walletHistory,
                     endpoint: req.originalUrl,
                 });

@@ -699,7 +699,7 @@ var userWallet = function (req, res, next) { return __awaiter(void 0, void 0, vo
             case 0:
                 _a.trys.push([0, 3, , 4]);
                 id = req.params.id;
-                return [4 /*yield*/, models_1.UserModel.findById(id).select("wallet points")];
+                return [4 /*yield*/, models_1.UserModel.findById(id).select("wallet points withdraw")];
             case 1:
                 user = _a.sent();
                 if (!user)

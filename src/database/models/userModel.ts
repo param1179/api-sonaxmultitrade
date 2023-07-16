@@ -96,6 +96,10 @@ const UserSchema = new Schema<IUser>(
       type: String,
       default: null,
     },
+    withdraw: {
+      type: Number,
+      default: 0,
+    },
     wallet: {
       type: Number,
       default: 0,

@@ -21,6 +21,7 @@ export const getInstallments = async (
       data: installments,
       points: user?.points,
       wallet: user?.wallet,
+      withdraw: user?.withdraw,
       walletHistory,
       endpoint: req.originalUrl,
     });

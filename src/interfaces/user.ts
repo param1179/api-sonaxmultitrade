@@ -25,6 +25,7 @@ export interface IUser extends Document {
   pin: string | null;
   country: string | null;
   wallet: number;
+  withdraw: number;
   points: number;
   packageId: ObjectId | null;
   pId: ObjectId | null;

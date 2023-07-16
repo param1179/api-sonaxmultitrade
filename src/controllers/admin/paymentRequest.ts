@@ -44,7 +44,7 @@ export const updatePaymentRequest = async (
     await PaymentRequestModel.updateOne({ _id: id }, { status: "paid" });
     await UserModel.updateOne(
       { _id: request?.requestBy },
-      { $inc: { wallet: `-${request?.payment}` } }
+      { $inc: { wallet: `-${request?.payment}`, withdraw: request?.payment } }
     );
     await WalletHistoryModel.create({
       userId: request?.requestBy,

@@ -83,7 +83,7 @@ var updatePaymentRequest = function (req, res, next) { return __awaiter(void 0, 
                 return [4 /*yield*/, models_1.PaymentRequestModel.updateOne({ _id: id }, { status: "paid" })];
             case 2:
                 _a.sent();
-                return [4 /*yield*/, models_1.UserModel.updateOne({ _id: request === null || request === void 0 ? void 0 : request.requestBy }, { $inc: { wallet: "-".concat(request === null || request === void 0 ? void 0 : request.payment) } })];
+                return [4 /*yield*/, models_1.UserModel.updateOne({ _id: request === null || request === void 0 ? void 0 : request.requestBy }, { $inc: { wallet: "-".concat(request === null || request === void 0 ? void 0 : request.payment), withdraw: request === null || request === void 0 ? void 0 : request.payment } })];
             case 3:
                 _a.sent();
                 return [4 /*yield*/, walletHistory_1.WalletHistoryModel.create({

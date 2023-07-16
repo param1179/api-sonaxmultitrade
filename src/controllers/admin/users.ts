@@ -553,7 +553,7 @@ export const userWallet = async (
 ) => {
   try {
     const { id } = req.params;
-    const user = await UserModel.findById(id).select("wallet points");
+    const user = await UserModel.findById(id).select("wallet points withdraw");
     if (!user) return next(ApiError.BadRequest("User not found!"));
 
     const walletHistory = await WalletHistoryModel.find({ userId: id })
