@@ -34,7 +34,7 @@ export const teamsDirect = async (req: IAuth, res: Response, next: NextFunction)
     const direct = await UserSponserByModel.find(
       { "childs.sponserBy": userId },
       { _id: 0, childs: { $elemMatch: { sponserBy: userId } } }
-    ).populate("childs.childId", "uId firstName LastName createdAt isCompleted")
+    ).populate("childs.childId", "uId firstName lastName createdAt isCompleted")
 
     res.status(OK).json({
       status: OK,

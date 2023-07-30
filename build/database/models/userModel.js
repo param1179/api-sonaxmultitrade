@@ -62,6 +62,10 @@ var UserSchema = new mongoose_1.Schema({
         type: String,
         default: null,
     },
+    spouseOrFather: {
+        type: String,
+        default: null,
+    },
     gender: {
         type: String,
         trim: true,

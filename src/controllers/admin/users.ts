@@ -508,6 +508,15 @@ export const userUpdate = async (
     if (!user) return next(ApiError.BadRequest("user not exist!"));
 
     await UserModel.updateOne({ _id: id }, body);
+    await UserNomineeModel.updateOne(
+      { userId: id },
+      {
+        firstName: body.nomineeFirstName,
+        lastName: body.nomineeLastName,
+        dob: body.nomineeDob,
+        relation: body.nomineeRelation,
+      }
+    );
 
     res.status(OK).json({
       status: OK,

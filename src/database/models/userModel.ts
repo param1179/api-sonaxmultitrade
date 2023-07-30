@@ -24,6 +24,10 @@ const UserSchema = new Schema<IUser>(
       type: String,
       default: null,
     },
+    spouseOrFather: {
+      type: String,
+      default: null,
+    },
     gender: {
       type: String,
       trim: true,

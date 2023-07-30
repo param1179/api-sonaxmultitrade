@@ -8,6 +8,7 @@ export interface IUser extends Document {
   firstName: string | null;
   lastName: string | null;
   email: string | null;
+  spouseOrFather: string | null;
   activeUser: string;
   gender: string | null;
   password: string;

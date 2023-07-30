@@ -635,7 +635,7 @@ var userUpdate = function (req, res, next) { return __awaiter(void 0, void 0, vo
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 3, , 4]);
+                _a.trys.push([0, 4, , 5]);
                 body = req.body;
                 id = req.params.id;
                 return [4 /*yield*/, models_1.UserModel.findById(id)];
@@ -646,17 +646,25 @@ var userUpdate = function (req, res, next) { return __awaiter(void 0, void 0, vo
                 return [4 /*yield*/, models_1.UserModel.updateOne({ _id: id }, body)];
             case 2:
                 _a.sent();
+                return [4 /*yield*/, models_1.UserNomineeModel.updateOne({ userId: id }, {
+                        firstName: body.nomineeFirstName,
+                        lastName: body.nomineeLastName,
+                        dob: body.nomineeDob,
+                        relation: body.nomineeRelation,
+                    })];
+            case 3:
+                _a.sent();
                 res.status(consts_1.OK).json({
                     status: consts_1.OK,
                     message: "Successfully updated.",
                     endpoint: req.originalUrl,
                 });
-                return [3 /*break*/, 4];
-            case 3:
+                return [3 /*break*/, 5];
+            case 4:
                 error_8 = _a.sent();
                 next(error_8);
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
+                return [3 /*break*/, 5];
+            case 5: return [2 /*return*/];
         }
     });
 }); };
