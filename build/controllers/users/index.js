@@ -23,3 +23,4 @@ __exportStar(require("./installments"), exports);
 __exportStar(require("./getTotal"), exports);
 __exportStar(require("./rewards"), exports);
 __exportStar(require("./paymentRequest"), exports);
+__exportStar(require("./profile"), exports);

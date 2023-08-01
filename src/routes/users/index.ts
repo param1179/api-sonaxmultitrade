@@ -17,6 +17,9 @@ router.post("/request", auth, validate(createPaymentRequest), UserCtrl.createPay
 router.get("/installments", auth, UserCtrl.getInstallments);
 router.get("/rewards", auth, UserCtrl.getRewards);
 router.post("/changePassword", auth, validate(userChangePasswordSchema), UserCtrl.changePAssword);
+router.get("/get", auth, UserCtrl.getUserProfile);
+router.put("/update", auth, UserCtrl.userUpdate);
+
 
 
 export { router as usersRouter };
