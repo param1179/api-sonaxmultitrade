@@ -7,6 +7,7 @@ import {
   authAdmin,
   createRewards,
   userChangePasswordSchemaByAdmin,
+  createUserRewards,
 } from "../../middlewares";
 
 const router = express.Router();
@@ -20,8 +21,11 @@ router.get("/profile", AdminCtrl.adminProfile);
 router.post("/users/add", authAdmin, validate(createUser), AdminCtrl.adminCreateUser);
 router.get("/user/profile/:id", authAdmin, AdminCtrl.getUserProfile);
 router.post("/rewards", authAdmin, validate(createRewards), AdminCtrl.createRewards);
+router.post("/userRewards/:id", authAdmin, validate(createUserRewards), AdminCtrl.createUserRewards);
+router.get("/userRewards/:id", authAdmin, AdminCtrl.getUserRewards);
 router.post("/changePassword/:id", authAdmin, validate(userChangePasswordSchemaByAdmin), AdminCtrl.changePAsswordByAdmin);
 router.get("/rewards", authAdmin, AdminCtrl.getRewards);
+router.delete("/reward/:id", authAdmin, AdminCtrl.deleteReward);
 router.get("/packages", authAdmin, AdminCtrl.packages);
 router.get("/users", authAdmin, AdminCtrl.getUsers);
 router.get("/users/list", authAdmin, AdminCtrl.getAllUsers);

@@ -21,4 +21,5 @@ __exportStar(require("./userNominee"), exports);
 __exportStar(require("./package"), exports);
 __exportStar(require("./installmentsModel"), exports);
 __exportStar(require("./rewards"), exports);
+__exportStar(require("./userRewards"), exports);
 __exportStar(require("./paymentyRequest"), exports);

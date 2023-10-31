@@ -33,6 +33,14 @@ export const createRewards = yup.object({
   }),
 });
 
+export const createUserRewards = yup.object({
+  body: yup.object({
+    title: yup.string().required("Title Level is require field!"),
+    price: yup.number().required("Price is require field!"),
+    date: yup.string().required("Date name is require field!"),
+  }),
+});
+
 export const userChangePasswordSchemaByAdmin = yup.object({
   body: yup.object({
     password: yup.string().max(15).required(),

@@ -23,7 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userChangePasswordSchemaByAdmin = exports.createRewards = exports.createPaymentRequest = exports.createUser = exports.adminLoginSchema = void 0;
+exports.userChangePasswordSchemaByAdmin = exports.createUserRewards = exports.createRewards = exports.createPaymentRequest = exports.createUser = exports.adminLoginSchema = void 0;
 var yup = __importStar(require("yup"));
 exports.adminLoginSchema = yup.object({
     body: yup.object({
@@ -52,6 +52,13 @@ exports.createRewards = yup.object({
         rewardLevel: yup.string().required("Reward Level is require field!"),
         onPairs: yup.string().required("Pairs is require field!"),
         reward: yup.string().required("Reward name is require field!"),
+    }),
+});
+exports.createUserRewards = yup.object({
+    body: yup.object({
+        title: yup.string().required("Title Level is require field!"),
+        price: yup.number().required("Price is require field!"),
+        date: yup.string().required("Date name is require field!"),
     }),
 });
 exports.userChangePasswordSchemaByAdmin = yup.object({

@@ -1,22 +1,22 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RewardsModel = void 0;
+exports.UserRewardsModel = void 0;
 var mongoose_1 = require("mongoose");
 // Create the schema
 var rewardSchema = new mongoose_1.Schema({
-    rewardLevel: {
+    userId: {
+        type: mongoose_1.Types.ObjectId,
+        ref: "User",
+    },
+    title: {
         type: String,
         require: true,
     },
-    rewardPrice: {
+    price: {
         type: Number,
         require: true,
     },
-    onPairs: {
-        type: Number,
-        require: true,
-    },
-    reward: {
+    date: {
         type: String,
         require: true,
     },
@@ -24,4 +24,4 @@ var rewardSchema = new mongoose_1.Schema({
     timestamps: true,
 });
 // Create and export user model
-exports.RewardsModel = (0, mongoose_1.model)("Reward", rewardSchema);
+exports.UserRewardsModel = (0, mongoose_1.model)("UserReward", rewardSchema);

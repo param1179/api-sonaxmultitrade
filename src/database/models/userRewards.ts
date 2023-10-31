@@ -1,22 +1,22 @@
 import { Schema, model, Types } from "mongoose";
-import { IRewards } from "../../interfaces";
+import { IUserRewards } from "../../interfaces";
 
 // Create the schema
-const rewardSchema = new Schema<IRewards>(
+const rewardSchema = new Schema<IUserRewards>(
   {
-    rewardLevel: {
+    userId: {
+      type: Types.ObjectId,
+      ref: "User",
+    },
+    title: {
       type: String,
       require: true,
     },
-    rewardPrice: {
+    price: {
       type: Number,
       require: true,
     },
-    onPairs: {
-      type: Number,
-      require: true,
-    },
-    reward: {
+    date: {
       type: String,
       require: true,
     },
@@ -27,4 +27,4 @@ const rewardSchema = new Schema<IRewards>(
 );
 
 // Create and export user model
-export const RewardsModel = model<IRewards>("Reward", rewardSchema);
+export const UserRewardsModel = model<IUserRewards>("UserReward", rewardSchema);

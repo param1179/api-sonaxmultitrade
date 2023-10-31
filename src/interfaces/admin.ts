@@ -32,8 +32,16 @@ export interface IPackages extends Request {
 
 export interface IRewards extends Request {
   rewardLevel: string;
+  rewardPrice: number;
   onPairs: number;
   reward: string;
+}
+
+export interface IUserRewards extends Request {
+  userId?: ID;
+  title: string;
+  price: number;
+  date: string;
 }
 
 export interface IPaymentRequest extends Request {
