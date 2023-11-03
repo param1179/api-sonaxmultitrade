@@ -36,13 +36,75 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updatePaymentRequest = exports.getPaymentRequest = void 0;
+exports.updatePaymentRequest = exports.getPaymentRequest = exports.getBusiness = void 0;
 var consts_1 = require("../../consts");
 var models_1 = require("../../database/models");
 var walletHistory_1 = require("../../database/models/walletHistory");
 var errors_1 = require("../../errors");
+var getBusiness = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, _b, from, _c, to, fromDate, toDate, users, installments, matched, ids, usersMonthly, monthlyBusiness, totalBusiness, error_1;
+    return __generator(this, function (_d) {
+        switch (_d.label) {
+            case 0:
+                _d.trys.push([0, 5, , 6]);
+                _a = req.query, _b = _a.from, from = _b === void 0 ? new Date() : _b, _c = _a.to, to = _c === void 0 ? new Date() : _c;
+                fromDate = new Date(from);
+                toDate = new Date(to);
+                toDate.setDate(toDate.getDate() + 1);
+                return [4 /*yield*/, models_1.UserModel.countDocuments({ isCompleted: true })];
+            case 1:
+                users = _d.sent();
+                return [4 /*yield*/, models_1.InstallmentsModel.find({ status: true })];
+            case 2:
+                installments = _d.sent();
+                return [4 /*yield*/, models_1.InstallmentsModel.find({
+                        $and: [
+                            { status: true },
+                            { updatedAt: { $gte: fromDate } },
+                            { updatedAt: { $lte: toDate } },
+                        ],
+                    })];
+            case 3:
+                matched = _d.sent();
+                ids = matched
+                    .map(function (user) { return user.userId; })
+                    .filter(function (e, i, a) { return e !== a[i - 1]; });
+                return [4 /*yield*/, models_1.UserModel.countDocuments({
+                        _id: {
+                            $in: ids,
+                        },
+                    })];
+            case 4:
+                usersMonthly = _d.sent();
+                monthlyBusiness = 0;
+                matched.forEach(function (element) {
+                    monthlyBusiness += Number(element.price);
+                });
+                totalBusiness = 0;
+                installments.forEach(function (element) {
+                    totalBusiness += Number(element.price);
+                });
+                res.status(consts_1.OK).json({
+                    status: consts_1.OK,
+                    message: "successfully.",
+                    totalBusiness: totalBusiness,
+                    monthlyBusiness: monthlyBusiness,
+                    users: users,
+                    usersMonthly: usersMonthly,
+                    endpoint: req.originalUrl,
+                });
+                return [3 /*break*/, 6];
+            case 5:
+                error_1 = _d.sent();
+                next(error_1);
+                return [3 /*break*/, 6];
+            case 6: return [2 /*return*/];
+        }
+    });
+}); };
+exports.getBusiness = getBusiness;
 var getPaymentRequest = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var requests, error_1;
+    var requests, error_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -60,8 +122,8 @@ var getPaymentRequest = function (req, res, next) { return __awaiter(void 0, voi
                 });
                 return [3 /*break*/, 3];
             case 2:
-                error_1 = _a.sent();
-                next(error_1);
+                error_2 = _a.sent();
+                next(error_2);
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
@@ -69,7 +131,7 @@ var getPaymentRequest = function (req, res, next) { return __awaiter(void 0, voi
 }); };
 exports.getPaymentRequest = getPaymentRequest;
 var updatePaymentRequest = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, request, error_2;
+    var id, request, error_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -103,8 +165,8 @@ var updatePaymentRequest = function (req, res, next) { return __awaiter(void 0, 
                 });
                 return [3 /*break*/, 6];
             case 5:
-                error_2 = _a.sent();
-                next(error_2);
+                error_3 = _a.sent();
+                next(error_3);
                 return [3 /*break*/, 6];
             case 6: return [2 /*return*/];
         }

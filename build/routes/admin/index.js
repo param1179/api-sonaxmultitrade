@@ -37,3 +37,4 @@ router.get("/test", middlewares_1.authAdmin, controllers_1.AdminCtrl.packagesUpd
 router.get("/points", middlewares_1.authAdmin, controllers_1.AdminCtrl.updatePoints);
 router.get("/wallet/:id", middlewares_1.authAdmin, controllers_1.AdminCtrl.userWallet);
 router.get("/requests", middlewares_1.authAdmin, controllers_1.AdminCtrl.getPaymentRequest);
+router.get("/business", middlewares_1.authAdmin, controllers_1.AdminCtrl.getBusiness);

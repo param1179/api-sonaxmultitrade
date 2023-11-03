@@ -41,5 +41,6 @@ router.get("/test", authAdmin, AdminCtrl.packagesUpdate);
 router.get("/points", authAdmin, AdminCtrl.updatePoints);
 router.get("/wallet/:id", authAdmin, AdminCtrl.userWallet);
 router.get("/requests", authAdmin, AdminCtrl.getPaymentRequest);
+router.get("/business", authAdmin, AdminCtrl.getBusiness);
 
 export { router as adminRouter };

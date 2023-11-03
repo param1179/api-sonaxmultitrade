@@ -1,6 +1,7 @@
 import { NextFunction, Response } from "express";
 import { OK } from "../../consts";
 import {
+  InstallmentsModel,
   PaymentRequestModel,
   RewardsModel,
   UserModel,
@@ -8,6 +9,64 @@ import {
 import { WalletHistoryModel } from "../../database/models/walletHistory";
 import { ApiError } from "../../errors";
 import { IAuthAdmin } from "../../interfaces";
+
+export const getBusiness = async (
+  req: IAuthAdmin,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { from = new Date(), to = new Date() } = req.query as unknown as {
+      from: Date;
+      to: Date;
+    };
+
+    const fromDate = new Date(from);
+    const toDate = new Date(to);
+    toDate.setDate(toDate.getDate() + 1);
+
+    const users = await UserModel.countDocuments({ isCompleted: true });
+
+    const installments = await InstallmentsModel.find({ status: true });
+    const matched = await InstallmentsModel.find({
+      $and: [
+        { status: true },
+        { updatedAt: { $gte: fromDate } },
+        { updatedAt: { $lte: toDate } },
+      ],
+    });
+    const ids = matched
+      .map((user: any) => user.userId)
+      .filter((e, i, a) => e !== a[i - 1]);
+
+    const usersMonthly = await UserModel.countDocuments({
+      _id: {
+        $in: ids,
+      },
+    });
+    var monthlyBusiness: number = 0;
+    matched.forEach((element) => {
+      monthlyBusiness += Number(element.price);
+    });
+
+    var totalBusiness: number = 0;
+    installments.forEach((element) => {
+      totalBusiness += Number(element.price);
+    });
+
+    res.status(OK).json({
+      status: OK,
+      message: `successfully.`,
+      totalBusiness,
+      monthlyBusiness,
+      users,
+      usersMonthly,
+      endpoint: req.originalUrl,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 export const getPaymentRequest = async (
   req: IAuthAdmin,
