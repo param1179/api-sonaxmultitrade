@@ -113,7 +113,7 @@ var createUser = function (req, res, next) { return __awaiter(void 0, void 0, vo
                     : totalUsers.toString().length === 2
                         ? "00"
                         : totalUsers.toString().length === 3 && "0";
-                body.uId = "SONAX" + zero + totalUsers;
+                body.uId = zero ? "SONAX" + zero + totalUsers : "SONAX" + totalUsers;
                 return [4 /*yield*/, models_1.UserModel.create(body)];
             case 2:
                 user = _a.sent();

@@ -167,7 +167,7 @@ var adminCreateUser = function (req, res, next) { return __awaiter(void 0, void 
                     : totalUsers.toString().length === 2
                         ? "00"
                         : totalUsers.toString().length === 3 && "0";
-                body_1.uId = "SONAX" + zero + totalUsers;
+                body_1.uId = zero ? "SONAX" + zero + totalUsers : "SONAX" + totalUsers;
                 return [4 /*yield*/, models_1.UserModel.create(body_1)];
             case 2:
                 user = _a.sent();
