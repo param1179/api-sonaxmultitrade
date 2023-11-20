@@ -133,7 +133,6 @@ var createUser = function (req, res, next) { return __awaiter(void 0, void 0, vo
                 })];
             case 5:
                 spo = _a.sent();
-                console.log(spo);
                 if (!(body.sponserId && !spo)) return [3 /*break*/, 7];
                 return [4 /*yield*/, models_1.UserSponserByModel.create({
                         childs: {

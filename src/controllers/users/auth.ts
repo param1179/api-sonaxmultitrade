@@ -89,7 +89,6 @@ export const createUser = async (
       const spo = await UserSponserByModel.findOne({
         parentId: body.parentId,
       });
-      console.log(spo);
       if (body.sponserId && !spo) {
         await UserSponserByModel.create({
           childs: {
