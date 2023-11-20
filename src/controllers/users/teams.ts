@@ -130,7 +130,7 @@ async function childArray(children: any, userId: any) {
         firstName: "Add User",
         _id: null,
       },
-      parentId: userId,
+      parentId: children.childs[0].parentId,
       placement: place !== "Right" ? "Right" : "Left",
     };
     children.childs[1] = ch;
