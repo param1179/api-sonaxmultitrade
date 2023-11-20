@@ -22,7 +22,7 @@ export const createUserDirect = async (
         : totalUsers.toString().length === 2
         ? "00"
         : totalUsers.toString().length === 3 && "0";
-    body.uId = "SONAX" + zero + totalUsers;
+    body.uId = zero ? "SONAX" + zero + totalUsers : "SONAX" + totalUsers;
     const user = await UserModel.create(body);
 
     if (user) {
