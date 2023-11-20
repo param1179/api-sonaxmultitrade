@@ -189,6 +189,7 @@ function childArray(children, userId) {
                                     firstName: "Add User",
                                     _id: null,
                                 },
+                                parentId: userId,
                                 placement: "Left",
                             },
                             {
@@ -196,6 +197,7 @@ function childArray(children, userId) {
                                     firstName: "Add User",
                                     _id: null,
                                 },
+                                parentId: userId,
                                 placement: "Right",
                             },
                         ],

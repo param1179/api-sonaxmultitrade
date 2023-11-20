@@ -18,6 +18,7 @@ router.get("/installments", auth, UserCtrl.getInstallments);
 router.get("/rewards", auth, UserCtrl.getRewards);
 router.post("/changePassword", auth, validate(userChangePasswordSchema), UserCtrl.changePAssword);
 router.get("/get", auth, UserCtrl.getUserProfile);
+router.get("/getUser/:id", auth, UserCtrl.getUser);
 router.put("/update", auth, UserCtrl.userUpdate);
 
 

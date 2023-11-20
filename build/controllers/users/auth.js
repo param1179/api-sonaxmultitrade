@@ -46,7 +46,6 @@ var consts_1 = require("../../consts");
 var dto_1 = require("../../dto");
 var errors_1 = require("../../errors");
 var models_1 = require("../../database/models");
-var services_1 = require("../../services");
 var userLogIn = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, uId, password, user, isMatch, userData, error_1;
     return __generator(this, function (_b) {
@@ -103,7 +102,7 @@ var createUser = function (req, res, next) { return __awaiter(void 0, void 0, vo
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 11, , 12]);
+                _a.trys.push([0, 10, , 11]);
                 body = req.body;
                 return [4 /*yield*/, models_1.UserModel.countDocuments()];
             case 1:
@@ -134,6 +133,7 @@ var createUser = function (req, res, next) { return __awaiter(void 0, void 0, vo
                 })];
             case 5:
                 spo = _a.sent();
+                console.log(spo);
                 if (!(body.sponserId && !spo)) return [3 /*break*/, 7];
                 return [4 /*yield*/, models_1.UserSponserByModel.create({
                         childs: {
@@ -161,21 +161,23 @@ var createUser = function (req, res, next) { return __awaiter(void 0, void 0, vo
             case 8:
                 _a.sent();
                 _a.label = 9;
-            case 9: return [4 /*yield*/, (0, services_1.sendOtp)("+91".concat(user.mobile), "Welcome to Sonax Multitrade. You are registered with us. Your user ID: \"".concat(user.uId, "\" and PASSWORD: \"").concat(body.password, "\". You can login on https://sonaxmultitrade.in . Thank you."))];
-            case 10:
-                _a.sent();
+            case 9:
+                // await sendOtp(
+                //   `+91${user.mobile}`,
+                //   `Welcome to Sonax Multitrade. You are registered with us. Your user ID: "${user.uId}" and PASSWORD: "${body.password}". You can login on https://sonaxmultitrade.in . Thank you.`
+                // );
                 res.status(consts_1.OK).json({
                     status: consts_1.OK,
                     message: "Created successfully.",
                     user: user,
                     endpoint: req.originalUrl,
                 });
-                return [3 /*break*/, 12];
-            case 11:
+                return [3 /*break*/, 11];
+            case 10:
                 error_2 = _a.sent();
                 next(error_2);
-                return [3 /*break*/, 12];
-            case 12: return [2 /*return*/];
+                return [3 /*break*/, 11];
+            case 11: return [2 /*return*/];
         }
     });
 }); };

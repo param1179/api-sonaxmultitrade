@@ -105,6 +105,7 @@ async function childArray(children: any, userId: any) {
             firstName: "Add User",
             _id: null,
           },
+          parentId: userId,
           placement: "Left",
         },
         {
@@ -112,6 +113,7 @@ async function childArray(children: any, userId: any) {
             firstName: "Add User",
             _id: null,
           },
+          parentId: userId,
           placement: "Right",
         },
       ],

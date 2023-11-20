@@ -74,7 +74,7 @@ export const createUser = async (
         : totalUsers.toString().length === 3 && "0";
     body.uId = zero ? "SONAX" + zero + totalUsers : "SONAX" + totalUsers;
     const user = await UserModel.create(body);
-
+    
     if (user) {
       if (body.nomineeFirstName) {
         await UserNomineeModel.create({
@@ -85,10 +85,11 @@ export const createUser = async (
           relation: body.nomineeRelation,
         });
       }
-
+      
       const spo = await UserSponserByModel.findOne({
         parentId: body.parentId,
       });
+      console.log(spo);
       if (body.sponserId && !spo) {
         await UserSponserByModel.create({
           childs: {
@@ -115,10 +116,10 @@ export const createUser = async (
       }
     }
 
-    await sendOtp(
-      `+91${user.mobile}`,
-      `Welcome to Sonax Multitrade. You are registered with us. Your user ID: "${user.uId}" and PASSWORD: "${body.password}". You can login on https://sonaxmultitrade.in . Thank you.`
-    );
+    // await sendOtp(
+    //   `+91${user.mobile}`,
+    //   `Welcome to Sonax Multitrade. You are registered with us. Your user ID: "${user.uId}" and PASSWORD: "${body.password}". You can login on https://sonaxmultitrade.in . Thank you.`
+    // );
 
     res.status(OK).json({
       status: OK,

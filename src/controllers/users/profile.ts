@@ -63,3 +63,23 @@ export const getUserProfile = async (
       next(error);
     }
   };
+
+  export const getUser = async (
+    req: IAuth,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const { id } = req.params;
+      const user = await UserModel.findById(id).select("firstName lastName uId");
+  
+      res.status(OK).json({
+        status: OK,
+        message: `Successfully fetched.`,
+        user,
+        endpoint: req.originalUrl,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
