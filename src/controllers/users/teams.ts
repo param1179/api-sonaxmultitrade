@@ -28,13 +28,20 @@ export const teams = async (req: IAuth, res: Response, next: NextFunction) => {
   }
 };
 
-export const teamsDirect = async (req: IAuth, res: Response, next: NextFunction) => {
+export const teamsDirect = async (
+  req: IAuth,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const userId = req.userId;
     const direct = await UserSponserByModel.find(
       { "childs.sponserBy": userId },
       { _id: 0, childs: { $elemMatch: { sponserBy: userId } } }
-    ).populate("childs.childId", "uId firstName lastName createdAt isCompleted")
+    ).populate(
+      "childs.childId",
+      "uId firstName lastName createdAt isCompleted"
+    );
 
     res.status(OK).json({
       status: OK,
@@ -70,7 +77,9 @@ export const teamList = async (
     await cobine(userId);
 
     const active = child.filter((res: any) => res.isCompleted === true).length;
-    const inActive = child.filter((res: any) => res.isCompleted === false).length;
+    const inActive = child.filter(
+      (res: any) => res.isCompleted === false
+    ).length;
 
     res.status(OK).json({
       status: OK,
@@ -93,11 +102,12 @@ async function getchildData(userId: any) {
 }
 
 async function childArray(children: any, userId: any) {
-  if (!children) {
+
+  if (!children || children.childs.length === 0) {
     const user = await UserModel.findById(userId).select(
       "firstName lastName email uId isCompleted createdAt"
     );
-    
+
     children = {
       childs: [
         {
@@ -130,7 +140,7 @@ async function childArray(children: any, userId: any) {
         firstName: "Add User",
         _id: null,
       },
-      parentId: children.childs[0].parentId._id,
+      parentId: userId,
       placement: place !== "Right" ? "Right" : "Left",
     };
     children.childs[1] = ch;
