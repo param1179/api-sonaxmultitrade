@@ -20,7 +20,7 @@ export const getBusiness = async (
       from: Date;
       to: Date;
     };
-
+    var fresh: any;
     const fromDate = new Date(from);
     const toDate = new Date(to);
     toDate.setDate(toDate.getDate() + 1);
@@ -28,6 +28,59 @@ export const getBusiness = async (
     const users = await UserModel.countDocuments({ isCompleted: true });
 
     const installments = await InstallmentsModel.find({ status: true });
+    InstallmentsModel.collection
+      .aggregate([
+        {
+          $match: {
+            status: true,
+            createdAt: { $gte: fromDate, $lte: toDate },
+          },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "userId",
+            foreignField: "_id",
+            as: "userDetails",
+          },
+        },
+        {
+          $unwind: "$userDetails",
+        },
+        {
+          $project: {
+            _id: 0,
+            firstName: "$userDetails.firstName",
+            lastName: "$userDetails.lastName",
+            uId: "$userDetails.uId",
+            createdAt: "$userDetails.createdAt",
+            price: 1,
+            updatedAt: 1,
+          },
+        },
+        {
+          $group: {
+            _id: "$userId",
+            userDetails: { $addToSet: "$$ROOT" },
+          },
+        },
+        {
+          $unwind: "$userDetails",
+        },
+        {
+          $replaceRoot: {
+            newRoot: "$userDetails",
+          },
+        },
+      ])
+      .toArray(function (err, result) {
+        if (err) {
+          console.error("Error while executing aggregate:", err);
+          return;
+        }
+        fresh = result;
+      });
+
     const matched = await InstallmentsModel.find({
       $and: [
         { status: true },
@@ -61,6 +114,7 @@ export const getBusiness = async (
       monthlyBusiness,
       users,
       usersMonthly,
+      fresh,
       endpoint: req.originalUrl,
     });
   } catch (error) {

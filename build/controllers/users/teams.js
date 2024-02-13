@@ -178,7 +178,7 @@ function childArray(children, userId) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    if (!!children) return [3 /*break*/, 2];
+                    if (!(!children || children.childs.length === 0)) return [3 /*break*/, 2];
                     return [4 /*yield*/, models_1.UserModel.findById(userId).select("firstName lastName email uId isCompleted createdAt")];
                 case 1:
                     user = _a.sent();
@@ -212,7 +212,7 @@ function childArray(children, userId) {
                                 firstName: "Add User",
                                 _id: null,
                             },
-                            parentId: children.childs[0].parentId,
+                            parentId: userId,
                             placement: place !== "Right" ? "Right" : "Left",
                         };
                         children.childs[1] = ch;

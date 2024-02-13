@@ -42,7 +42,7 @@ var models_1 = require("../../database/models");
 var walletHistory_1 = require("../../database/models/walletHistory");
 var errors_1 = require("../../errors");
 var getBusiness = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, _b, from, _c, to, fromDate, toDate, users, installments, matched, ids, usersMonthly, monthlyBusiness, totalBusiness, error_1;
+    var _a, _b, from, _c, to, fresh, fromDate, toDate, users, installments, matched, ids, usersMonthly, monthlyBusiness, totalBusiness, error_1;
     return __generator(this, function (_d) {
         switch (_d.label) {
             case 0:
@@ -57,6 +57,58 @@ var getBusiness = function (req, res, next) { return __awaiter(void 0, void 0, v
                 return [4 /*yield*/, models_1.InstallmentsModel.find({ status: true })];
             case 2:
                 installments = _d.sent();
+                models_1.InstallmentsModel.collection
+                    .aggregate([
+                    {
+                        $match: {
+                            status: true,
+                            createdAt: { $gte: fromDate, $lte: toDate },
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: "users",
+                            localField: "userId",
+                            foreignField: "_id",
+                            as: "userDetails",
+                        },
+                    },
+                    {
+                        $unwind: "$userDetails",
+                    },
+                    {
+                        $project: {
+                            _id: 0,
+                            firstName: "$userDetails.firstName",
+                            lastName: "$userDetails.lastName",
+                            uId: "$userDetails.uId",
+                            createdAt: "$userDetails.createdAt",
+                            price: 1,
+                            updatedAt: 1,
+                        },
+                    },
+                    {
+                        $group: {
+                            _id: "$userId",
+                            userDetails: { $addToSet: "$$ROOT" },
+                        },
+                    },
+                    {
+                        $unwind: "$userDetails",
+                    },
+                    {
+                        $replaceRoot: {
+                            newRoot: "$userDetails",
+                        },
+                    },
+                ])
+                    .toArray(function (err, result) {
+                    if (err) {
+                        console.error("Error while executing aggregate:", err);
+                        return;
+                    }
+                    fresh = result;
+                });
                 return [4 /*yield*/, models_1.InstallmentsModel.find({
                         $and: [
                             { status: true },
@@ -91,6 +143,7 @@ var getBusiness = function (req, res, next) { return __awaiter(void 0, void 0, v
                     monthlyBusiness: monthlyBusiness,
                     users: users,
                     usersMonthly: usersMonthly,
+                    fresh: fresh,
                     endpoint: req.originalUrl,
                 });
                 return [3 /*break*/, 6];
